@@ -1,0 +1,50 @@
+{
+  "modality": "biopsych",
+  "description": "Base biopsychology skill - routes to modality-specific skills",
+  "version": "1.0",
+  "skill_path": "skills/biopsych/SKILL.md",
+  "modalities": ["eeg", "fmri", "online", "psychophys"],
+  "confidence_threshold": 0.6,
+  "scan_depth": 3,
+  "file_patterns": {
+    "eeg": {
+      "extensions": [".set", ".vhdr", ".eeg", ".bdf", ".fdt"],
+      "keywords": ["electrode", "erp", "ica", "eeglab", "mne", "fieldtrip"],
+      "weight": 1.0
+    },
+    "fmri": {
+      "extensions": [".nii", ".nii.gz"],
+      "keywords": ["bold", "tr", "fmri", "spm", "fsl", "fmriprep", "bids"],
+      "weight": 1.0
+    },
+    "online": {
+      "extensions": [".html", ".js", ".json"],
+      "keywords": ["jspsych", "qualtrics", "pavlovia", "prolific", "mturk", "reaction_time"],
+      "weight": 0.8
+    },
+    "psychophys": {
+      "extensions": [".acq", ".edf", ".mat", ".ibi", ".rr"],
+      "keywords": ["ecg", "eda", "hrv", "emg", "scr", "acqknowledge", "kubios", "ledalab", "neurokit"],
+      "weight": 1.0
+    }
+  },
+  "bids_structure_indicators": [
+    "sub-*/anat/",
+    "sub-*/func/",
+    "*_bold.nii.gz",
+    "*_T1w.nii.gz",
+    "*_bold.json",
+    "sub-*/ses-*/"
+  ],
+  "detection_logic": {
+    "score_calculation": "sum(file_matches * weight) + keyword_hits",
+    "threshold": "max_score > other_scores * 1.2",
+    "multimodal_handling": "ask_user_primary_modality"
+  },
+  "output": {
+    "format": "markdown",
+    "filename_pattern": "PREREGISTRATION_DRAFT.md",
+    "include_detected_files": true,
+    "include_confidence_scores": true
+  }
+}

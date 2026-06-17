@@ -1,0 +1,126 @@
+{
+  "modality": "fmri",
+  "description": "fMRI preregistration skill with BIDS structure parsing",
+  "version": "1.0",
+  "skill_path": "skills/fmri/SKILL.md",
+  "template_path": "templates/fmri/FMRI_PREREGISTRATION_GUIDE.md",
+  "common_templates": [
+    "templates/biopsych/common/METADATA_SCHEMA.md",
+    "templates/biopsych/common/ETHICS_PRIVACY_TEMPLATE.md"
+  ],
+  "bids_compliance": {
+    "required_structure": [
+      "sub-*/func/*_bold.nii.gz",
+      "sub-*/func/*_bold.json",
+      "sub-*/anat/*_T1w.nii.gz"
+    ],
+    "validate_naming": true,
+    "parse_json_sidecars": true
+  },
+  "bids_json_fields": [
+    "EchoTime",
+    "RepetitionTime",
+    "FlipAngle",
+    "VoxelSize",
+    "NumberOfVolumesDiscardedAtBeginning",
+    "MagneticFieldStrength",
+    "SequenceName"
+  ],
+  "file_patterns": {
+    "data_files": [".nii", ".nii.gz"],
+    "json_sidecars": [".json"],
+    "scripts": [".m", ".py", ".r", ".R", ".fsf"],
+    "documentation": ["README.md", "readme.txt", "protocol.txt", "README"]
+  },
+  "software_detection": {
+    "spm": {
+      "keywords": ["spm", "SPM.stats", "spm_preproc", "matlabbatch"],
+      "files": ["*.m"],
+      "parameters_to_extract": [
+        "spm.stats.fmri_spec",
+        "spm.stats.fmri_est",
+        "spm_preproc"
+      ]
+    },
+    "fsl": {
+      "keywords": ["fsl", "flirt", "fnirt", "feat", "fslmaths"],
+      "files": ["*.fsf", "*.sh"],
+      "parameters_to_extract": [
+        "flirt",
+        "fnirt",
+        "feat",
+        "fslmaths"
+      ]
+    },
+    "fmriprep": {
+      "keywords": ["fmriprep", "bids", "bold_std"],
+      "files": ["*.py", "*.sh"],
+      "parameters_to_extract": [
+        "fmriprep",
+        "bold_std",
+        "space"
+      ]
+    }
+  },
+  "parameter_extraction": {
+    "acquisition": {
+      "tr": "RepetitionTime",
+      "te": "EchoTime",
+      "flip_angle": "FlipAngle",
+      "voxel_size": "VoxelSize",
+      "field_strength": "MagneticFieldStrength",
+      "sequence_type": "SequenceName"
+    },
+    "preprocessing": {
+      "realignment": ["motion_correction", "realign", "flirt", "motion_params"],
+      "normalization": ["normalize", "fnirt", "registration", "standard_space"],
+      "smoothing": ["smooth", "fwhm", "kernel"],
+      "ica": ["ica", "melodic"]
+    },
+    "statistical_analysis": {
+      "glm": ["GLM", "design_matrix", "contrast"],
+      "contrasts": ["contrast", "F-test", "t-test"],
+      "thresholds": ["p <", "threshold", "fwe", "cluster"]
+    }
+  },
+  "required_sections": [
+    "Metadata",
+    "Study Information",
+    "Participants",
+    "fMRI Acquisition Parameters",
+    "Task Design",
+    "Preprocessing Pipeline",
+    "Statistical Analysis Plan",
+    "Ethics & Data Management"
+  ],
+  "confidence_levels": {
+    "high": "Extracted from BIDS JSON or scripts (≥2 mentions)",
+    "medium": "Inferred from directory structure or common patterns",
+    "low": "Estimated based on field standards; needs verification"
+  },
+  "quality_checks": {
+    "bids_validation": true,
+    "json_completeness": ["EchoTime", "RepetitionTime"],
+    "data_file_count": {
+      "warning_threshold": 5,
+      "error_threshold": 0
+    },
+    "validation_patterns": {
+      "tr_range": [0.5, 10.0],
+      "te_range": [0.01, 0.1],
+      "fa_range": [20, 120],
+      "voxel_size_range": [1.0, 5.0]
+    }
+  },
+  "output": {
+    "format": "markdown",
+    "filename": "PREREGISTRATION_DRAFT.md",
+    "include_extracted_parameters": true,
+    "include_bids_summary": true,
+    "include_confidence_marks": true,
+    "sections_to_auto_fill": [
+      "fMRI Acquisition Parameters",
+      "Preprocessing Pipeline"
+    ]
+  }
+}

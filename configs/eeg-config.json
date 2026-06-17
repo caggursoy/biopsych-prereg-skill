@@ -1,0 +1,96 @@
+{
+  "modality": "eeg",
+  "description": "EEG/ERP preregistration skill with automated parameter extraction",
+  "version": "1.0",
+  "skill_path": "skills/eeg/SKILL.md",
+  "template_path": "templates/eeg/EEG_ERP_PREREGISTRATION_GUIDE.md",
+  "common_templates": [
+    "templates/biopsych/common/METADATA_SCHEMA.md",
+    "templates/biopsych/common/ETHICS_PRIVACY_TEMPLATE.md"
+  ],
+  "file_patterns": {
+    "data_files": [".set", ".vhdr", ".eeg", ".bdf", ".fdt"],
+    "scripts": [".m", ".py", ".r", ".R"],
+    "documentation": ["README.md", "readme.txt", "protocol.txt", "procedure.md"]
+  },
+  "software_detection": {
+    "eeglab": {
+      "keywords": ["eeglab", "pop_", "eeg."],
+      "parameters_to_extract": [
+        "pop_eegfilter",
+        "pop_resample",
+        "pop_chanedit",
+        "pop_runica",
+        "pop_selectdata"
+      ]
+    },
+    "mne": {
+      "keywords": ["mne", "raw.", "epochs", "ica."],
+      "parameters_to_extract": [
+        "raw.filter",
+        "raw.set_eeg_reference",
+        "Epochs",
+        "ICA",
+        "raw.get_montage"
+      ]
+    },
+    "fieldtrip": {
+      "keywords": ["fieldtrip", "ft_", "cfg."],
+      "parameters_to_extract": [
+        "ft_preprocessing",
+        "ft_timelockanalysis",
+        "ft_componentanalysis"
+      ]
+    }
+  },
+  "parameter_extraction": {
+    "sampling_rate": {
+      "patterns": ["Srate", "sampling_rate", "fs", "sample_rate"],
+      "unit": "Hz"
+    },
+    "filters": {
+      "highpass": ["high.pass", "highpass", "hpfilter"],
+      "lowpass": ["low.pass", "lowpass", "lpfilter"],
+      "notch": ["notch", "line_noise", "60hz", "50hz"]
+    },
+    "reference_electrode": ["ref", "reference", "eeg.ref"],
+    "ground_electrode": ["ground", "gnd", "agnd"],
+    "ica_components": ["n_components", "ica", "components"],
+    "baseline_window": ["baseline", "bl_range"],
+    "epoch_window": ["tmin", "tmax", "latency"]
+  },
+  "required_sections": [
+    "Metadata",
+    "Study Information",
+    "Participants",
+    "EEG Acquisition",
+    "Experimental Paradigm",
+    "Preprocessing Plan",
+    "Analysis Plan",
+    "Ethics & Data Management"
+  ],
+  "confidence_levels": {
+    "high": "≥2 mentions in scripts or direct specification",
+    "medium": "Inferred from common patterns",
+    "low": "Guess based on field standards; needs verification"
+  },
+  "quality_checks": {
+    "required_file_types": ["scripts", "data_files"],
+    "warning_if_missing": ["documentation"],
+    "validation_patterns": {
+      "sampling_rate_range": [100, 10000],
+      "filter_range": [0.01, 500],
+      "epoch_length_range": [100, 5000]
+    }
+  },
+  "output": {
+    "format": "markdown",
+    "filename": "PREREGISTRATION_DRAFT.md",
+    "include_extracted_commands": true,
+    "include_confidence_marks": true,
+    "sections_to_auto_fill": [
+      "EEG Acquisition",
+      "Preprocessing Plan"
+    ]
+  }
+}

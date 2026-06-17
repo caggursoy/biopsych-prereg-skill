@@ -1,0 +1,174 @@
+{
+  "modality": "psychophys",
+  "description": "Psychophysiology preregistration skill with automated parameter extraction for ECG, HRV, EDA, EMG, and other peripheral measures",
+  "version": "1.0",
+  "skill_path": "skills/psychophys/SKILL.md",
+  "template_path": "templates/psychophys/PSYCHOPHYSIOLOGY_PREREGISTRATION_GUIDE.md",
+  "common_templates": [
+    "templates/biopsych/common/METADATA_SCHEMA.md",
+    "templates/biopsych/common/ETHICS_PRIVACY_TEMPLATE.md"
+  ],
+  "file_patterns": {
+    "data_files": [".acq", ".edf", ".mat", ".txt", ".csv", ".hea", ".dat", ".ibi", ".rr"],
+    "scripts": [".m", ".py", ".r", ".R"],
+    "documentation": ["README.md", "readme.txt", "protocol.txt", "procedure.md"]
+  },
+  "signal_types": {
+    "ecg_hrv": {
+      "keywords": ["ecg", "hrv", "r_peak", "rr_interval", "ibi", "heart_rate", "SDNN", "RMSSD", "pNN50", "LF", "HF"],
+      "file_indicators": [".ibi", ".rr", "ecg", "hrv"]
+    },
+    "eda": {
+      "keywords": ["eda", "gsr", "scr", "scl", "skin_conductance", "tonic", "phasic"],
+      "file_indicators": ["eda", "gsr", "scr"]
+    },
+    "emg": {
+      "keywords": ["emg", "electromyography", "muscle", "rectify", "envelope", "burst"],
+      "file_indicators": ["emg", "muscle"]
+    },
+    "respiration": {
+      "keywords": ["resp", "breathing", "respiration_rate", "breath", "respiratory"],
+      "file_indicators": ["resp", "breathing"]
+    },
+    "pupillometry": {
+      "keywords": ["pupil", "diameter", "dilation", "constriction", "eye_tracking"],
+      "file_indicators": ["pupil", "eye"]
+    }
+  },
+  "software_detection": {
+    "acqknowledge": {
+      "keywords": ["acq", "biopac", "AcqKnowledge"],
+      "file_extensions": [".acq"],
+      "parameters_to_extract": ["sampling_rate", "channels", "duration"]
+    },
+    "kubios": {
+      "keywords": ["kubios", "hrv_analysis", "rr_correction", "artifact_correction"],
+      "parameters_to_extract": ["artifact_threshold", "detrending", "interpolation"]
+    },
+    "ledalab": {
+      "keywords": ["ledalab", "analyze", "optimize", "continuous decomposition"],
+      "parameters_to_extract": ["decomposition_method", "scr_threshold", "baseline"]
+    },
+    "neurokit2": {
+      "keywords": ["neurokit", "nk.", "ecg_process", "eda_process", "hrv_time", "hrv_frequency"],
+      "parameters_to_extract": [
+        "nk.ecg_process",
+        "nk.eda_process",
+        "nk.hrv_time",
+        "nk.hrv_frequency",
+        "nk.eda_peaks",
+        "sampling_rate"
+      ]
+    },
+    "biosppy": {
+      "keywords": ["biosppy", "signals.ecg", "signals.eda", "signals.emg"],
+      "parameters_to_extract": [
+        "biosppy.signals.ecg",
+        "biosppy.signals.eda",
+        "sampling_rate"
+      ]
+    },
+    "rhrv": {
+      "keywords": ["RHRV", "LoadBeatRR", "FilterNIHR", "CalculateTimeAnalysis", "CalculateFrequencyAnalysis"],
+      "parameters_to_extract": [
+        "LoadBeatRR",
+        "FilterNIHR",
+        "CalculateTimeAnalysis",
+        "CalculateFrequencyAnalysis"
+      ]
+    },
+    "matlab_custom": {
+      "keywords": ["load", "ecg", "eda", "hrv", "scr"],
+      "parameters_to_extract": ["fs", "sampling_rate", "detect", "filter"]
+    }
+  },
+  "parameter_extraction": {
+    "sampling_rate": {
+      "patterns": ["sampling_rate", "fs", "sample_rate", "srate", "frequency"],
+      "unit": "Hz",
+      "typical_ranges": {
+        "ecg": [250, 2000],
+        "eda": [10, 1000],
+        "emg": [500, 5000],
+        "respiration": [10, 100],
+        "pupil": [30, 1000]
+      }
+    },
+    "ecg_processing": {
+      "r_peak_detection": ["detect_r_peaks", "ecg_peaks", "r_peaks", "pan_tompkins", "hamilton"],
+      "artifact_detection": ["artifact", "ectopic", "outlier", "threshold"],
+      "filtering": ["filter", "bandpass", "highpass", "lowpass"],
+      "hrv_measures": {
+        "time_domain": ["SDNN", "RMSSD", "pNN50", "SDSD", "NN50"],
+        "frequency_domain": ["LF", "HF", "VLF", "LF_HF", "total_power"],
+        "nonlinear": ["SD1", "SD2", "entropy", "DFA"]
+      }
+    },
+    "eda_processing": {
+      "decomposition": ["decompose", "cvxEDA", "ledalab", "continuous_decomposition", "highpass"],
+      "scr_detection": ["scr_peaks", "eda_peaks", "threshold", "amplitude", "rise_time"],
+      "measures": ["SCL", "SCR", "tonic", "phasic", "amplitude", "frequency", "AUC"]
+    },
+    "emg_processing": {
+      "filtering": ["bandpass", "highpass", "lowpass", "notch"],
+      "rectification": ["rectify", "abs", "absolute"],
+      "smoothing": ["smooth", "envelope", "rms", "moving_average"],
+      "measures": ["mean_amplitude", "peak_amplitude", "integrated_emg", "burst"]
+    },
+    "baseline_window": ["baseline", "rest", "pre_task", "bl_window"],
+    "analysis_window": ["task", "condition", "trial", "epoch", "window"]
+  },
+  "required_sections": [
+    "Metadata",
+    "Study Information",
+    "Participants",
+    "Psychophysiological Measures",
+    "Experimental Paradigm",
+    "Signal Processing",
+    "Analysis Plan",
+    "Ethics & Data Management"
+  ],
+  "confidence_levels": {
+    "high": "≥2 mentions in scripts or direct specification with parameters",
+    "medium": "Inferred from common patterns or single mention",
+    "low": "Guess based on field standards; needs verification"
+  },
+  "quality_checks": {
+    "required_file_types": ["scripts", "data_files"],
+    "warning_if_missing": ["documentation"],
+    "validation_patterns": {
+      "ecg_sampling_rate_range": [250, 2000],
+      "eda_sampling_rate_range": [10, 1000],
+      "emg_sampling_rate_range": [500, 5000],
+      "hrv_window_minimum": 60000,
+      "scr_amplitude_range": [0.01, 10]
+    }
+  },
+  "output": {
+    "format": "markdown",
+    "filename": "PREREGISTRATION_DRAFT.md",
+    "include_extracted_commands": true,
+    "include_confidence_marks": true,
+    "sections_to_auto_fill": [
+      "Psychophysiological Measures",
+      "Signal Processing"
+    ]
+  },
+  "exclusion_criteria_templates": {
+    "ecg_hrv": [
+      "Cardiovascular conditions (arrhythmias, heart disease)",
+      "Medications affecting heart rate (beta blockers, etc.)",
+      "Pacemaker or implanted cardiac device"
+    ],
+    "eda": [
+      "Skin conditions affecting palmar/plantar surfaces",
+      "Excessive sweating (hyperhidrosis)",
+      "Medications affecting sweating"
+    ],
+    "general": [
+      "Medications affecting autonomic nervous system",
+      "Neurological conditions",
+      "Psychiatric medications (if relevant to study)"
+    ]
+  }
+}

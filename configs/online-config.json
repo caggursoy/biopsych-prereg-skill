@@ -1,0 +1,148 @@
+{
+  "modality": "online",
+  "description": "Online behavioral preregistration skill with platform detection",
+  "version": "1.0",
+  "skill_path": "skills/online/SKILL.md",
+  "template_path": "templates/online/ONLINE_BEHAVIORAL_PREREGISTRATION_GUIDE.md",
+  "common_templates": [
+    "templates/biopsych/common/METADATA_SCHEMA.md",
+    "templates/biopsych/common/ETHICS_PRIVACY_TEMPLATE.md"
+  ],
+  "file_patterns": {
+    "experiment_files": [".html", ".js", ".json"],
+    "config_files": ["config.json", "settings.json", "experiment_config.*"],
+    "scripts": [".py", ".r", ".R"],
+    "documentation": ["README.md", "readme.txt", "protocol.txt", "experiment_description.md"]
+  },
+  "platform_detection": {
+    "jspsych": {
+      "keywords": ["jspsych", "jsPsych.init", "jspsych.min.js", "addProperties"],
+      "file_patterns": ["*.html", "*.js"],
+      "parameters_to_extract": [
+        "jsPsych.init",
+        "timeline",
+        "trial_duration",
+        "stimulus"
+      ]
+    },
+    "qualtrics": {
+      "keywords": ["Qualtrics", "QID", "Qualtrics.SurveyEngine"],
+      "file_patterns": ["*.qsf", "*.html"],
+      "parameters_to_extract": [
+        "Question type",
+        "Branching logic",
+        "Skip logic"
+      ]
+    },
+    "pavlovia": {
+      "keywords": ["psychojs", "pavlovia", "PavloviaManager"],
+      "file_patterns": ["*.js", "*.html"],
+      "parameters_to_extract": [
+        "psychojs",
+        "trialList",
+        "params"
+      ]
+    },
+    "custom": {
+      "keywords": ["experiment", "trial", "stimulus", "response"],
+      "file_patterns": ["*.html", "*.js"],
+      "parameters_to_extract": ["custom logic"]
+    }
+  },
+  "recruitment_platform_detection": {
+    "prolific": {
+      "keywords": ["PROLIFIC_PID", "STUDY_ID", "SESSION_ID"],
+      "compensation_field": "automatically_via_prolific"
+    },
+    "mturk": {
+      "keywords": ["turkSubmitTo", "HITId", "assignmentId", "workerId"],
+      "compensation_field": "HIT_reward"
+    },
+    "pavlovia": {
+      "keywords": ["pavlovia", "experiment_url"],
+      "compensation_field": "experiment_credits"
+    },
+    "direct": {
+      "keywords": ["localhost", "internal_url", "custom_link"],
+      "compensation_field": "manual_entry_required"
+    }
+  },
+  "data_quality_configuration": {
+    "attention_checks": {
+      "detection_patterns": ["attention_check", "quality_check", "attention"],
+      "extract_location": true,
+      "extract_criteria": true
+    },
+    "response_time_bounds": {
+      "detect_minimum": true,
+      "detect_maximum": true,
+      "default_range": [200, 60000],
+      "patterns": ["rt_min", "rt_max", "response_time_range"]
+    },
+    "bot_detection": {
+      "check_methods": [
+        "duplicate_ip",
+        "device_fingerprint",
+        "geolocation_mismatch",
+        "suspicious_patterns"
+      ],
+      "patterns": ["bot_detection", "quality_control"]
+    },
+    "duplicate_detection": {
+      "methods": ["same_ip", "same_device", "same_credentials"],
+      "action": "flag_for_review"
+    }
+  },
+  "parameter_extraction": {
+    "experiment_structure": {
+      "trials_per_condition": ["n_trials", "num_trials", "trial_count"],
+      "conditions": ["conditions", "blocks", "factor_levels"],
+      "trial_duration": ["trial_duration", "stimulus_duration", "timeout"],
+      "iti": ["iti", "inter_trial_interval", "delay"]
+    },
+    "stimuli": {
+      "stimulus_type": ["image", "text", "video", "audio"],
+      "stimulus_count": ["n_stimuli", "stimulus_list"],
+      "response_options": ["choices", "buttons", "options"]
+    },
+    "data_collection": {
+      "expected_n": ["n_target", "sample_size", "target_n"],
+      "platform": ["platform", "collection_method"],
+      "duration": ["estimated_duration", "study_length"]
+    }
+  },
+  "required_sections": [
+    "Metadata",
+    "Study Information",
+    "Participants",
+    "Experiment Design",
+    "Data Quality Procedures",
+    "Analysis Plan",
+    "Ethics & Data Management"
+  ],
+  "confidence_levels": {
+    "high": "Directly extracted from code or configuration (≥2 mentions)",
+    "medium": "Inferred from experiment structure or patterns",
+    "low": "Estimated based on documentation; needs verification"
+  },
+  "quality_checks": {
+    "required_files": ["experiment_files"],
+    "recommended_files": ["documentation", "config_files"],
+    "validation_patterns": {
+      "minimum_trials_per_condition": 10,
+      "maximum_study_duration": 3600,
+      "minimum_sample_size": 20
+    }
+  },
+  "output": {
+    "format": "markdown",
+    "filename": "PREREGISTRATION_DRAFT.md",
+    "include_extracted_parameters": true,
+    "include_platform_info": true,
+    "include_confidence_marks": true,
+    "sections_to_auto_fill": [
+      "Experiment Design",
+      "Data Quality Procedures"
+    ]
+  }
+}

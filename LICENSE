@@ -1,0 +1,114 @@
+MIT License
+
+Copyright (c) 2026 Biopsychology Preregistration Skill Contributors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+
+## Acknowledgment of Source Materials
+
+This project builds upon work by the preregistration community. All templates and 
+skills are derived from or inspired by the following sources (full citations with 
+DOIs and links below):
+
+### Key References
+
+**EEG/ERP Preregistration**:
+- Govaart, G. H., Schettino, A., Helbling, S., Mehler, D. M. A., Ngiam, W. X. Q., 
+  Moreau, D., Chiossi, F., Zanesco, A. P., Yang, Y.-F., Gau, R., Bartlett, J. E., 
+  García Alanis, J. C., Gutsell, J. N., Çetinçelik, M., Pavlov, Y. G., Šoškić, A., 
+  Ehinger, B. V., Mouseli, P., Algermissen, J., & Paul, E. (2025). EEG ERP 
+  Preregistration Template [Preprint]. MetaArXiv. 
+  https://doi.org/10.31222/osf.io/4nvpt
+
+- Clayson, P. E., Carbine, K. A., & Larson, M. J. (2021). Making ERP Research More 
+  Transparent: Guidelines for Preregistration. International Journal of Psychophysiology, 
+  161, 55-67. https://doi.org/10.1016/j.ijpsycho.2021.02.016
+
+- Šoškić, A., Ković, V., Algermissen, J., et al. (2025). ARTEM-IS for ERP: Agreed 
+  Reporting Template for EEG Methodology—International Standard for Event-Related 
+  Potential Experiments. Psychophysiology, 62(12), e70187. 
+  https://doi.org/10.1111/psyp.70187
+
+**fMRI Preregistration**:
+- Beyer, F., Flannery, J., Gau, R., Janssen, L., Schaare, L., Hartmann, H., 
+  Nilsonne, G., Martin, S., Khalil, A., Lipp, I., Puhlmann, L., Heinrichs, H., 
+  Mohamed, A., Herholz, P., Sicorello, M., & Panagoulas, E. (2021). A fMRI 
+  pre-registration template. PsychArchives. 
+  https://doi.org/10.23668/PSYCHARCHIVES.5121
+
+**Online Behavioral Preregistration (PRP-QUANT)**:
+- Preregistration Task Force. (2020). Preregistration Standards for Psychology - 
+  the Psychological Research Preregistration-Quantitative (aka PRP-QUANT) Template. 
+  ZPID (Leibniz Institute for Psychology). 
+  https://doi.org/10.23668/psycharchives.4584
+
+- Bosnjak, M., Fiebach, C. J., Mellor, D., et al. (2022). A template for 
+  preregistration of quantitative research in psychology: Report of the joint 
+  psychological societies preregistration task force. American Psychologist, 77(4), 
+  602-615. https://doi.org/10.1037/amp0000879
+  PubMed: https://pubmed.ncbi.nlm.nih.gov/34807636/
+
+**Psychophysiology Preregistration**:
+- Boucsein, W., Fowles, D. C., Grimnes, S., et al. (2012). Publication 
+  recommendations for electrodermal measurements. Psychophysiology, 49(8), 1017-1034.
+  https://doi.org/10.1111/j.1469-8986.2012.01384.x
+
+- Task Force of the European Society of Cardiology and the North American Society 
+  of Pacing and Electrophysiology. (1996). Heart rate variability: Standards of 
+  measurement, physiological interpretation, and clinical use. European Heart Journal, 
+  17(3), 354-381. https://doi.org/10.1093/oxfordjournals.eurheartj.a014868
+
+- Fridlund, A. J., & Cacioppo, J. T. (1986). Guidelines for human electromyographic 
+  research. Psychophysiology, 23(5), 567-589.
+  https://doi.org/10.1111/j.1469-8986.1986.tb00676.x
+
+- Cacioppo, J. T., Tassinary, L. G., & Berntson, G. G. (Eds.). (2007). 
+  Handbook of Psychophysiology (3rd ed.). Cambridge University Press.
+  ISBN: 978-0-521-84471-0
+
+### Organizations & Communities
+
+- **Center for Open Science (COS)**: https://www.cos.io/
+  OSF Registries and preregistration initiative
+
+- **Leibniz Institute for Psychology (ZPID)**: https://www.zpid.de/
+  PsychArchives and PreReg resources at https://prereg-psych.org/
+
+- **Society for Psychophysiological Research (SPR)**: https://www.sprweb.org/
+  Psychophysiology standards and guidelines
+
+### Platforms for Registration
+
+- **OSF Registries**: https://osf.io/registries
+- **AsPredicted**: https://aspredicted.org/
+- **PsychArchives**: https://www.psycharchives.org/
+- **ClinicalTrials.gov**: https://clinicaltrials.gov/
+
+### Related Standards & Specifications
+
+- **BIDS (Brain Imaging Data Structure)**: https://bids-standard.github.io/
+- **jsPsych**: https://www.jspsych.org/
+- **Qualtrics**: https://www.qualtrics.com/
+- **Pavlovia**: https://pavlovia.org/
+
+All referenced works are cited with proper attribution throughout this project.
+The authors and contributors acknowledge the tremendous collaborative effort by 
+the open science community to advance transparent, reproducible research.
