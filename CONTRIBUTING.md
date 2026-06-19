@@ -20,23 +20,47 @@ Modalities that would benefit from contributions:
 
 ## How to Contribute
 
+### Quick Start: Report Issues & Share Feedback
+
+**We've created templates to make it easy for you to share feedback:**
+
+When you open an issue, choose one of these templates:
+
+1. **🐛 [Bug Report](https://github.com/caggursoy/biopsych-prereg-skill/issues/new?template=bug_report.md)**
+   - Something's broken or not working as expected
+   - Includes fields for reproduction steps and your setup
+
+2. **💡 [Feature Request](https://github.com/caggursoy/biopsych-prereg-skill/issues/new?template=feature_request.md)**
+   - Suggest improvements to the skill or workflow
+   - Helps us understand the problem and your proposed solution
+
+3. **📋 [Template Improvement](https://github.com/caggursoy/biopsych-prereg-skill/issues/new?template=template_improvement.md)**
+   - Propose changes to existing templates
+   - Suggest templates for new modalities (fNIRS, TMS, MEG, etc.)
+
+4. **🎯 [General Feedback](https://github.com/caggursoy/biopsych-prereg-skill/issues/new?template=idea.md)**
+   - Share ideas, observations, or constructive criticism
+   - Great for conceptual suggestions and feedback
+
+**Alternatively**, use [GitHub Discussions](https://github.com/caggursoy/biopsych-prereg-skill/discussions) for general questions that don't fit a specific issue template.
+
 ### 1. Suggesting Improvements
 
 Found an issue or have a suggestion?
 
-- **Open an Issue**: Describe the problem clearly, including:
+- **Open an Issue**: Use the appropriate template above. Describe clearly:
   - What template or skill is affected
   - What the issue is
   - How to reproduce it (if applicable)
   - Suggested fix (if you have one)
 
-- **Discussion Topics**: Use Issues to start discussions about:
+- **Discussion Topics**: Start a Discussion for:
   - Missing sections in templates
   - Unclear guidance or examples
   - New modalities to support
   - Improvements to skill detection logic
 
-### 2. Adding New Templates
+### 2. Adding New Templates (Full Contribution)
 
 Want to create a preregistration template for a new modality?
 

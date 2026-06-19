@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: GitHub Discussions
+    url: https://github.com/caggursoy/biopsych-prereg-skill/discussions
+    about: Have general questions? Start a discussion here!
+  - name: Full Documentation
+    url: https://github.com/caggursoy/biopsych-prereg-skill#documentation
+    about: Check out the docs before creating an issue

@@ -84,16 +84,26 @@ MIT License. See [LICENSE](LICENSE) for details.
 
 Templates are built on community-driven efforts. Acknowledgments: EEG/ERP Methods Preregistration Template team, fMRI Preregistration Template contributors, Joint Psychological Societies, Center for Open Science, ZPID, and Society for Psychophysiological Research.
 
-## Contributing
+## Contributing & Feedback
 
-We welcome contributions! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+This is an **experimental tool built by one person**—I need your help to make it better. The best way to contribute is to test it, break it, and tell me what you think.
+
+**How to Share Feedback:**
+
+Open a [GitHub issue](https://github.com/caggursoy/biopsych-prereg-skill/issues) with your:
+- 🐛 **[Bug Report](https://github.com/caggursoy/biopsych-prereg-skill/issues/new?template=bug_report.md)** — Something's broken or not working as expected
+- 💡 **[Feature Request](https://github.com/caggursoy/biopsych-prereg-skill/issues/new?template=feature_request.md)** — An idea to improve the skill or workflow
+- 📋 **[Template Improvement](https://github.com/caggursoy/biopsych-prereg-skill/issues/new?template=template_improvement.md)** — Suggest changes to templates or new modalities
+- 🎯 **[General Feedback](https://github.com/caggursoy/biopsych-prereg-skill/issues/new?template=idea.md)** — Ideas, observations, or constructive criticism
 
 **Ways to contribute:**
-- Suggest template improvements
-- Add templates for new modalities
-- Improve detection logic
+- Test it on your research projects and share results
+- Suggest improvements to detection logic
+- Contribute new templates for other modalities (fNIRS, TMS, MEG, etc.)
 - Share example preregistrations
-- Report issues or add resources
+- Add or improve references and resources
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed contribution guidelines.
 
 ## Resources
 
