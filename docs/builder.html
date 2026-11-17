@@ -59,6 +59,11 @@
         </div>
         <div class="notice notice-warn" id="validationSummary" hidden></div>
         <div class="accordion" id="sectionAccordion"></div>
+        <div class="row row-end mt-2">
+          <span class="small muted" id="batchStatus" role="status" aria-live="polite"></span>
+          <button class="btn btn-sm" type="button" id="btnBatchCancel" hidden>Cancel</button>
+          <button class="btn btn-primary" type="button" id="btnEnhanceAll">Enhance all sections with AI</button>
+        </div>
       </section>
 
       <section class="panel" id="panel-review" hidden aria-labelledby="h-review">
@@ -83,7 +88,7 @@
         <div class="row">
           <button class="btn btn-primary" type="button" id="btnDownload">Download PREREGISTRATION_DRAFT.md</button>
           <button class="btn" type="button" id="btnCopy">Copy Markdown</button>
-          <button class="btn" type="button" id="btnPrint">Print / Save as PDF</button>
+          <button class="btn" type="button" id="btnPdf">Save as PDF</button>
         </div>
         <p class="small mt-1" id="exportStatus" role="status" aria-live="polite"></p>
         <div class="notice mt-2">
@@ -161,6 +166,7 @@
 <script src="assets/js/schema.js"></script>
 <script src="assets/js/throttle.js"></script>
 <script src="assets/js/groq.js"></script>
+<script src="assets/js/pdf.js"></script>
 <script src="assets/js/builder.js"></script>
 </body>
 </html>

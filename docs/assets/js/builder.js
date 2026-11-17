@@ -31,8 +31,11 @@
     btnReset: document.getElementById("btnReset"),
     btnDownload: document.getElementById("btnDownload"),
     btnCopy: document.getElementById("btnCopy"),
-    btnPrint: document.getElementById("btnPrint"),
+    btnPdf: document.getElementById("btnPdf"),
     exportStatus: document.getElementById("exportStatus"),
+    btnEnhanceAll: document.getElementById("btnEnhanceAll"),
+    btnBatchCancel: document.getElementById("btnBatchCancel"),
+    batchStatus: document.getElementById("batchStatus"),
     keyInput: document.getElementById("keyInput"),
     modelSelect: document.getElementById("modelSelect"),
     btnSaveKey: document.getElementById("btnSaveKey"),
@@ -441,11 +444,13 @@
       aiRow.className = "row row-end mt-1";
       var aiStatus = document.createElement("span");
       aiStatus.className = "small muted";
+      aiStatus.id = "ai-status-" + section.id;
       aiStatus.setAttribute("role", "status");
       aiStatus.setAttribute("aria-live", "polite");
       var aiBtn = document.createElement("button");
       aiBtn.type = "button";
       aiBtn.className = "btn btn-sm";
+      aiBtn.id = "ai-" + section.id;
       aiBtn.textContent = "Expand with AI";
       aiBtn.addEventListener("click", function () {
         expandSection(section, nArea, aiBtn, aiStatus);
@@ -661,12 +666,43 @@
     }
   }
 
+  function savePdf() {
+    var draft = assembleDraft();
+    if (!draft) {
+      el.exportStatus.textContent = "Select a modality first.";
+      return;
+    }
+    if (!window.PreregPdf) {
+      el.exportStatus.textContent = "The PDF generator did not load. Reload the page and try again.";
+      return;
+    }
+    var modality = currentModality();
+    var title = getAnswer("metadata", "title") || "Preregistration Draft";
+    var pdf;
+    try {
+      pdf = window.PreregPdf.fromMarkdown(draft, {
+        title: title + " \u2014 " + modality.label
+      });
+    } catch (err) {
+      el.exportStatus.textContent = "Could not build the PDF: " + (err && err.message ? err.message : "unknown error");
+      return;
+    }
+    var blob = new Blob([pdf], { type: "application/pdf" });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement("a");
+    a.href = url;
+    a.download = "PREREGISTRATION_DRAFT.pdf";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+    el.exportStatus.textContent =
+      "Saved PREREGISTRATION_DRAFT.pdf (" + Math.round(blob.size / 1024) + " KB, " + pdf.length + " bytes).";
+  }
+
   el.btnDownload.addEventListener("click", download);
   el.btnCopy.addEventListener("click", copy);
-  el.btnPrint.addEventListener("click", function () {
-    renderPreview();
-    window.print();
-  });
+  el.btnPdf.addEventListener("click", savePdf);
 
   el.btnReset.addEventListener("click", function () {
     if (!window.confirm("Clear all answers for this browser? This cannot be undone.")) return;
@@ -759,7 +795,7 @@
     });
   });
 
-  function meterRow(label, value, limit) {
+  function meterRow(label, value, limit, ids) {
     var row = document.createElement("div");
     row.className = "meter-row";
     var l = document.createElement("span");
@@ -768,6 +804,7 @@
     var v = document.createElement("span");
     v.className = "value";
     v.textContent = value.toLocaleString() + " / " + limit.toLocaleString();
+    if (ids && ids.value) v.id = ids.value;
     var bar = document.createElement("span");
     bar.className = "bar";
     var fill = document.createElement("i");
@@ -775,10 +812,20 @@
     fill.style.width = pct + "%";
     if (pct >= 95) fill.className = "danger";
     else if (pct >= 75) fill.className = "warn";
+    if (ids && ids.fill) fill.id = ids.fill;
     bar.appendChild(fill);
     row.appendChild(l);
     row.appendChild(v);
     row.appendChild(bar);
+    if (ids && ids.countdown) {
+      var cd = document.createElement("span");
+      cd.className = "countdown";
+      cd.id = ids.countdown;
+      cd.setAttribute("role", "status");
+      cd.setAttribute("aria-live", "polite");
+      cd.textContent = "";
+      row.appendChild(cd);
+    }
     return row;
   }
 
@@ -789,7 +836,60 @@
     el.quotaMeter.appendChild(meterRow("Requests today", snap.requestsToday, snap.requestsTodayLimit));
     el.quotaMeter.appendChild(meterRow("Tokens today", snap.tokensToday, snap.tokensTodayLimit));
     el.quotaMeter.appendChild(meterRow("Requests this minute", snap.requestsThisMinute, snap.requestsPerMinuteLimit));
-    el.quotaMeter.appendChild(meterRow("Tokens this minute", snap.tokensThisMinute, snap.tokensPerMinuteLimit));
+    el.quotaMeter.appendChild(
+      meterRow("Tokens this minute", snap.tokensThisMinute, snap.tokensPerMinuteLimit, {
+        value: "tpmValue",
+        fill: "tpmFill",
+        countdown: "tpmCountdown"
+      })
+    );
+    tickCountdown();
+  }
+
+  var countdownTimer = null;
+  var countdownNeed = 0;
+  var countdownStatus = null;
+
+  function countdownLabel(wait) {
+    if (wait === Infinity) return "daily limit reached \u2014 resets 00:00 UTC";
+    if (wait <= 0) return "ready now";
+    return "next slot in " + Math.ceil(wait / 1000) + "s";
+  }
+
+  function tickCountdown() {
+    var wait = countdownNeed > 0 ? limiter.waitTime(countdownNeed) : 0;
+    var node = document.getElementById("tpmCountdown");
+    if (node) {
+      node.textContent = countdownLabel(wait);
+      node.className = "countdown " + (wait <= 0 ? "ready" : "waiting");
+    }
+    var fill = document.getElementById("tpmFill");
+    var value = document.getElementById("tpmValue");
+    if (fill || value) {
+      var snap = limiter.snapshot();
+      if (fill) fill.style.width = Math.min(100, (snap.tokensThisMinute / snap.tokensPerMinuteLimit) * 100) + "%";
+      if (value) value.textContent = snap.tokensThisMinute.toLocaleString() + " / " + snap.tokensPerMinuteLimit.toLocaleString();
+    }
+    if (countdownStatus && wait > 0 && wait !== Infinity) {
+      countdownStatus.textContent = "Waiting " + Math.ceil(wait / 1000) + "s for the token budget\u2026";
+    }
+    return wait;
+  }
+
+  function startCountdown(needTokens, statusNode) {
+    countdownNeed = needTokens;
+    countdownStatus = statusNode || null;
+    stopCountdown(true);
+    tickCountdown();
+    countdownTimer = setInterval(tickCountdown, 500);
+  }
+
+  function stopCountdown(keepTimer) {
+    if (countdownTimer) {
+      clearInterval(countdownTimer);
+      countdownTimer = null;
+    }
+    if (!keepTimer) countdownStatus = null;
   }
 
   function expandSection(section, target, button, status) {
@@ -803,24 +903,24 @@
       answers[f.id] = getAnswer(section.id, f.id);
     });
 
+    var payload = {
+      sectionTitle: section.title,
+      sectionIntro: section.intro,
+      modalityLabel: modality.label,
+      fields: section.fields,
+      answers: answers
+    };
+
     button.disabled = true;
     status.textContent = "Queued\u2026";
+    startCountdown(client.estimateFor(payload), status);
 
-    client
-      .expandSection(
-        {
-          sectionTitle: section.title,
-          sectionIntro: section.intro,
-          modalityLabel: modality.label,
-          fields: section.fields,
-          answers: answers
-        },
-        {
-          onWait: function (ms) {
-            status.textContent = "Waiting " + Math.ceil(ms / 1000) + "s for the rate limit\u2026";
-          }
+    return client
+      .expandSection(payload, {
+        onWait: function (ms) {
+          status.textContent = "Waiting " + Math.ceil(ms / 1000) + "s for the token budget\u2026";
         }
-      )
+      })
       .then(function (result) {
         var existing = target.value.trim();
         target.value = existing ? existing + "\n\n" + result.text : result.text;
@@ -833,8 +933,111 @@
       })
       .then(function () {
         button.disabled = false;
+        stopCountdown();
+        countdownNeed = 0;
         renderMeter();
       });
+  }
+
+  var batchRunning = false;
+  var batchCancelled = false;
+
+  function enhanceAll() {
+    if (!getStoredKey()) {
+      el.batchStatus.textContent = "Add a Groq key first.";
+      return;
+    }
+    var modality = currentModality();
+    if (!modality) return;
+
+    var pending = modality.sections.filter(function (s) {
+      return String(getAnswer(s.id, "narrative")).trim() === "";
+    });
+
+    if (!pending.length) {
+      el.batchStatus.textContent =
+        "Every section already has a narrative. Use a section's own button to redo one.";
+      return;
+    }
+
+    batchRunning = true;
+    batchCancelled = false;
+    el.btnEnhanceAll.disabled = true;
+    el.btnBatchCancel.hidden = false;
+
+    var index = 0;
+    var failed = 0;
+
+    function finish() {
+      batchRunning = false;
+      el.btnEnhanceAll.disabled = false;
+      el.btnBatchCancel.hidden = true;
+      var done = index - failed;
+      el.batchStatus.textContent = batchCancelled
+        ? "Stopped after " + done + " of " + pending.length + " sections."
+        : "Enhanced " + done + " of " + pending.length + " sections" + (failed ? ", " + failed + " failed" : "") + ".";
+      renderPreviewIfVisible();
+    }
+
+    function withTimeout(promise, ms) {
+      return new Promise(function (resolve, reject) {
+        var settled = false;
+        var timer = setTimeout(function () {
+          if (settled) return;
+          settled = true;
+          reject(new Error("Timed out after " + Math.round(ms / 1000) + "s."));
+        }, ms);
+        promise.then(
+          function (value) {
+            if (settled) return;
+            settled = true;
+            clearTimeout(timer);
+            resolve(value);
+          },
+          function (err) {
+            if (settled) return;
+            settled = true;
+            clearTimeout(timer);
+            reject(err);
+          }
+        );
+      });
+    }
+
+    function next() {
+      if (batchCancelled || index >= pending.length) {
+        finish();
+        return;
+      }
+      var section = pending[index];
+      var target = document.getElementById("f-" + section.id + "-narrative");
+      var button = document.getElementById("ai-" + section.id);
+      var status = document.getElementById("ai-status-" + section.id);
+      index++;
+
+      if (!target || !button) {
+        failed++;
+        next();
+        return;
+      }
+
+      el.batchStatus.textContent =
+        "Section " + index + " of " + pending.length + ": " + section.title + "\u2026";
+      withTimeout(expandSection(section, target, button, status), 90000).then(next, function () {
+        failed++;
+        next();
+      });
+    }
+
+    next();
+  }
+
+  if (el.btnEnhanceAll) el.btnEnhanceAll.addEventListener("click", enhanceAll);
+  if (el.btnBatchCancel) {
+    el.btnBatchCancel.addEventListener("click", function () {
+      batchCancelled = true;
+      el.batchStatus.textContent = "Stopping after the current section\u2026";
+    });
   }
 
   /* ---------- init ---------- */

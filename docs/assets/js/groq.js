@@ -4,6 +4,7 @@
   var ENDPOINT = "https://api.groq.com/openai/v1/chat/completions";
   var DEFAULT_MODEL = "openai/gpt-oss-120b";
   var FALLBACK_MODEL = "openai/gpt-oss-20b";
+  var MAX_TOKENS = 900;
 
   var SYSTEM_PROMPT = [
     "You are assisting a researcher in writing one section of a preregistration for a biopsychology study.",
@@ -43,6 +44,16 @@
     ];
   }
 
+  function estimateFor(payload) {
+    var messages = buildMessages(payload);
+    var promptText = messages
+      .map(function (m) {
+        return m.content;
+      })
+      .join("\n");
+    return root.PreregThrottle.estimateTokens(promptText) + MAX_TOKENS;
+  }
+
   function createClient(options) {
     options = options || {};
     var getKey = options.getKey || function () { return ""; };
@@ -70,6 +81,26 @@
         throw missing;
       }
 
+      var controller = new AbortController();
+      var timedOut = false;
+      var timer = setTimeout(function () {
+        timedOut = true;
+        controller.abort();
+      }, options.timeoutMs || 60000);
+
+      function forwardAbort() {
+        controller.abort();
+      }
+      if (signal) {
+        if (signal.aborted) forwardAbort();
+        else signal.addEventListener("abort", forwardAbort);
+      }
+
+      function cleanup() {
+        clearTimeout(timer);
+        if (signal) signal.removeEventListener("abort", forwardAbort);
+      }
+
       var res;
       try {
         res = await fetchImpl(ENDPOINT, {
@@ -79,9 +110,16 @@
             Authorization: "Bearer " + key
           },
           body: JSON.stringify(body),
-          signal: signal
+          signal: controller.signal
         });
       } catch (err) {
+        cleanup();
+        if (timedOut) {
+          var timeoutErr = new Error("Groq did not respond within 60s. Try again.");
+          timeoutErr.code = "timeout";
+          timeoutErr.refundable = true;
+          throw timeoutErr;
+        }
         if (err && err.name === "AbortError") {
           var aborted = new Error("Request cancelled.");
           aborted.code = "aborted";
@@ -93,6 +131,7 @@
         netErr.refundable = true;
         throw netErr;
       }
+      cleanup();
 
       if (limiter && limiter.syncFromHeaders) limiter.syncFromHeaders(res.headers);
 
@@ -146,9 +185,8 @@
       var signal = opts.signal;
       var notify = opts.onWait || function () {};
       var messages = buildMessages(payload);
-      var maxTokens = 900;
-      var promptText = messages.map(function (m) { return m.content; }).join("\n");
-      var estimate = root.PreregThrottle.estimateTokens(promptText) + maxTokens;
+      var maxTokens = MAX_TOKENS;
+      var estimate = estimateFor(payload);
 
       var body = {
         model: model,
@@ -186,6 +224,7 @@
 
     return {
       expandSection: expandSection,
+      estimateFor: estimateFor,
       model: model,
       fallbackModel: FALLBACK_MODEL,
       buildMessages: buildMessages
@@ -195,9 +234,11 @@
   root.PreregGroq = {
     createClient: createClient,
     buildMessages: buildMessages,
+    estimateFor: estimateFor,
     SYSTEM_PROMPT: SYSTEM_PROMPT,
     DEFAULT_MODEL: DEFAULT_MODEL,
     FALLBACK_MODEL: FALLBACK_MODEL,
+    MAX_TOKENS: MAX_TOKENS,
     ENDPOINT: ENDPOINT
   };
 })(typeof window !== "undefined" ? window : globalThis);

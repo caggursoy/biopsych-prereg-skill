@@ -156,6 +156,8 @@
     function refund(needTokens) {
       state.dayRequests = Math.max(0, state.dayRequests - 1);
       state.dayTokens = Math.max(0, state.dayTokens - needTokens);
+      state.rpm.tokens = Math.min(state.rpm.capacity, state.rpm.tokens + 1);
+      state.tpm.tokens = Math.min(state.tpm.capacity, state.tpm.tokens + needTokens);
       persist();
       onChange(snapshot());
     }
@@ -171,8 +173,10 @@
 
     function syncFromHeaders(headers) {
       if (!headers || typeof headers.get !== "function") return;
-      var remainingReq = Number(headers.get("x-ratelimit-remaining-requests"));
-      var remainingTok = Number(headers.get("x-ratelimit-remaining-tokens"));
+      var rawReq = headers.get("x-ratelimit-remaining-requests");
+      var rawTok = headers.get("x-ratelimit-remaining-tokens");
+      var remainingReq = rawReq == null ? NaN : Number(rawReq);
+      var remainingTok = rawTok == null ? NaN : Number(rawTok);
       if (isFinite(remainingReq) && remainingReq >= 0) {
         state.rpm.tokens = Math.min(state.rpm.tokens, remainingReq);
       }
@@ -190,48 +194,76 @@
       if (draining) return;
       draining = true;
 
+      function safeNext() {
+        try {
+          next();
+        } catch (err) {
+          draining = false;
+          if (typeof console !== "undefined" && console.error) {
+            console.error("prereg throttle drain error", err);
+          }
+        }
+      }
+
       function next() {
         if (cancelled || queue.length === 0) {
           draining = false;
           return;
         }
         var job = queue[0];
-        var wait = waitTime(job.tokens);
+        var wait;
+        try {
+          wait = waitTime(job.tokens);
+        } catch (err) {
+          queue.shift();
+          job.reject(err);
+          safeNext();
+          return;
+        }
 
         if (wait === Infinity) {
           queue.shift();
           job.reject(new Error("Daily Groq quota exhausted. Try again after 00:00 UTC."));
           onChange(snapshot());
-          next();
+          safeNext();
           return;
         }
 
         if (wait > 0) {
-          job.notify(wait);
-          sleep(wait).then(function () {
-            next();
-          });
+          try {
+            job.notify(wait);
+          } catch (err) {
+            /* a broken listener must not wedge the queue */
+          }
+          sleep(wait).then(safeNext, safeNext);
           return;
         }
 
         queue.shift();
-        charge(job.tokens);
+        try {
+          charge(job.tokens);
+        } catch (err) {
+          draining = false;
+          job.reject(err);
+          safeNext();
+          return;
+        }
         Promise.resolve()
           .then(job.run)
           .then(
             function (value) {
               job.resolve(value);
-              next();
+              safeNext();
             },
             function (err) {
               if (err && err.refundable) refund(job.tokens);
               job.reject(err);
-              next();
+              safeNext();
             }
           );
       }
 
-      next();
+      safeNext();
     }
 
     function schedule(run, tokens, notify) {

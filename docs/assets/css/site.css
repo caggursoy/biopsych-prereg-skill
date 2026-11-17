@@ -743,6 +743,24 @@ a:hover {
   background: var(--danger);
 }
 
+.meter-row .countdown {
+  grid-column: 1 / -1;
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-3);
+  min-height: 1.1em;
+}
+
+.meter-row .countdown.waiting {
+  color: var(--warn);
+  font-weight: 500;
+}
+
+.meter-row .countdown.ready {
+  color: var(--ok);
+  font-weight: 500;
+}
+
 /* ---------- preview ---------- */
 
 .preview {
