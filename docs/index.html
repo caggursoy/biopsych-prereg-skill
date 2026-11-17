@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Biopsychology Preregistration Builder</title>
+<meta name="description" content="Build a preregistration for EEG, fMRI, online behavioral or psychophysiology research in your browser. No install, no account.">
+<link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="index.html">Biopsych Prereg <span>Builder</span></a>
+    <nav class="site-nav" aria-label="Main">
+      <a href="index.html" aria-current="page">Home</a>
+      <a href="builder.html">Builder</a>
+      <a href="library.html">Library</a>
+      <a href="https://github.com/caggursoy/biopsych-prereg-skill">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero">
+    <div class="wrap">
+      <span class="eyebrow">Open tooling for reproducible biopsychology</span>
+      <h1>Write your preregistration before you see the data.</h1>
+      <p class="lede">
+        A structured builder for EEG/ERP, fMRI, online behavioral and psychophysiology studies.
+        Pick a modality, answer the sections, download a <code>PREREGISTRATION_DRAFT.md</code> that
+        follows the community templates this repository already ships. Everything runs in your
+        browser &mdash; no install, no account, no server.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="builder.html">Start a preregistration</a>
+        <a class="btn" href="library.html">Browse the templates</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Four modalities, one workflow</h2>
+        <p>
+          Each modality carries its own acquisition parameters, preprocessing plan and analysis
+          plan, plus the metadata and ethics sections every preregistration needs.
+        </p>
+      </div>
+      <div class="grid" id="modalityCards">
+        <noscript>
+          <p class="notice notice-warn">JavaScript is required to render the modality list.</p>
+        </noscript>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>How it works</h2>
+      </div>
+      <div class="grid">
+        <div class="card">
+          <h3>1. Choose a modality</h3>
+          <p>The builder loads the section list and field ranges from the repository's own configuration files.</p>
+        </div>
+        <div class="card">
+          <h3>2. Fill the sections</h3>
+          <p>Required fields are marked. Anything you leave blank is written into the draft as <code>[TO BE COMPLETED]</code> rather than silently dropped.</p>
+        </div>
+        <div class="card">
+          <h3>3. Review and export</h3>
+          <p>Preview the assembled Markdown, then download it, copy it, or print to PDF. Your answers stay in this browser.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Optional AI assistance</h2>
+        <p>
+          If you have a Groq API key, the builder can expand a terse answer into full prose one
+          section at a time. It is off by default, it never invents parameters, and the free tier's
+          rate limits are enforced client-side so you can see exactly why a request is waiting.
+        </p>
+      </div>
+      <div class="notice">
+        <p>
+          <strong>No key is bundled with this site.</strong> You supply your own, it is stored only in
+          this browser's local storage, and it is sent only to <code>api.groq.com</code>. The builder
+          works fully without it.
+        </p>
+      </div>
+      <div class="row mt-1">
+        <a class="btn" href="builder.html">Open the builder</a>
+        <a class="btn btn-ghost" href="https://console.groq.com/keys"  target="_blank">Get a Groq key</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <span>MIT licensed. Templates built on community preregistration efforts.</span>
+    <span><a href="https://github.com/caggursoy/biopsych-prereg-skill">Source</a> &middot; <a href="library.html">Library</a></span>
+  </div>
+</footer>
+
+<script src="assets/js/schema.js"></script>
+<script>
+(function () {
+  "use strict";
+  var host = document.getElementById("modalityCards");
+  var schema = window.PREREG_SCHEMA;
+  if (!host || !schema) return;
+
+  schema.modalities.forEach(function (m) {
+    var fields = m.sections.reduce(function (n, s) { return n + s.fields.length; }, 0);
+    var card = document.createElement("article");
+    card.className = "card";
+
+    var h = document.createElement("h3");
+    h.textContent = m.label;
+
+    var p = document.createElement("p");
+    p.textContent = m.description || "";
+
+    var meta = document.createElement("div");
+    meta.className = "card-meta";
+    [
+      m.sections.length + " sections",
+      fields + " fields",
+      m.software.length ? m.software.slice(0, 3).join(", ") : "template based"
+    ].forEach(function (text) {
+      var tag = document.createElement("span");
+      tag.className = "tag";
+      tag.textContent = text;
+      meta.appendChild(tag);
+    });
+
+    var link = document.createElement("a");
+    link.className = "btn btn-sm";
+    link.href = "builder.html?modality=" + encodeURIComponent(m.id);
+    link.textContent = "Build " + m.label;
+
+    card.appendChild(h);
+    card.appendChild(p);
+    card.appendChild(meta);
+    card.appendChild(link);
+    host.appendChild(card);
+  });
+})();
+</script>
+</body>
+</html>

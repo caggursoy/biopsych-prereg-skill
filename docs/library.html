@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Template Library &middot; Biopsych Prereg Builder</title>
+<meta name="description" content="Browse the EEG, fMRI, online behavioral and psychophysiology preregistration templates and skills that power the builder.">
+<link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="index.html">Biopsych Prereg <span>Builder</span></a>
+    <nav class="site-nav" aria-label="Main">
+      <a href="index.html">Home</a>
+      <a href="builder.html">Builder</a>
+      <a href="library.html" aria-current="page">Library</a>
+      <a href="https://github.com/caggursoy/biopsych-prereg-skill">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main" class="wrap">
+  <div class="library-layout">
+    <aside class="toc" aria-label="Library contents">
+      <h2>Modalities</h2>
+      <ul id="modalityList"></ul>
+      <h2>On this page</h2>
+      <ul id="headingList"></ul>
+    </aside>
+
+    <div>
+      <div class="panel-head">
+        <div>
+          <h1 id="docTitle" style="margin-bottom:0.15rem">Template library</h1>
+          <p class="small muted" id="docSource" style="margin:0"></p>
+        </div>
+        <div class="row">
+          <button class="btn btn-sm" id="viewTemplate" type="button" aria-pressed="true">Template</button>
+          <button class="btn btn-sm" id="viewSkill" type="button" aria-pressed="false">Skill</button>
+        </div>
+      </div>
+
+      <article class="doc" id="docBody" aria-live="polite"></article>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <span>Rendered from the repository's Markdown sources at build time.</span>
+    <span><a href="builder.html">Open the builder</a></span>
+  </div>
+</footer>
+
+<script src="assets/js/markdown.js"></script>
+<script src="assets/js/templates.js"></script>
+<script src="assets/js/library.js"></script>
+</body>
+</html>

@@ -1,0 +1,68 @@
+name: Deploy site to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "docs/**"
+      - "templates/**"
+      - "configs/**"
+      - "skills/**"
+      - "scripts/**"
+      - ".github/workflows/pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Generate site data from templates and configs
+        run: node scripts/build-site.mjs
+
+      - name: Validate schema, links and assets
+        run: node scripts/validate-site.mjs
+
+      - name: Test rate limiter
+        run: node scripts/test-throttle.mjs
+
+      - name: Test Groq client
+        run: node scripts/test-groq.mjs
+
+      - name: Fail if generated files are stale
+        run: |
+          if ! git diff --quiet -- docs/data docs/assets/js/schema.js docs/assets/js/templates.js; then
+            echo "::error::Generated site data is out of date. Run 'node scripts/build-site.mjs' and commit the result."
+            git --no-pager diff --stat -- docs/data docs/assets/js/schema.js docs/assets/js/templates.js
+            exit 1
+          fi
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,0 +1,2701 @@
+{
+  "version": "1.0",
+  "confidenceThreshold": 0.6,
+  "modalities": [
+    {
+      "id": "eeg",
+      "label": "EEG / ERP",
+      "description": "EEG/ERP preregistration skill with automated parameter extraction",
+      "template": "templates/eeg/EEG_ERP_PREREGISTRATION_GUIDE.md",
+      "templateTitle": "EEG/ERP Preregistration Template Guide",
+      "skill": "skills/eeg/SKILL.md",
+      "requiredSections": [
+        "Metadata",
+        "Study Information",
+        "Participants",
+        "EEG Acquisition",
+        "Experimental Paradigm",
+        "Preprocessing Plan",
+        "Analysis Plan",
+        "Ethics & Data Management"
+      ],
+      "sections": [
+        {
+          "id": "metadata",
+          "title": "Metadata",
+          "required": true,
+          "intro": "Identification and administrative details. Required for every preregistration regardless of modality.",
+          "fields": [
+            {
+              "id": "title",
+              "label": "Study title",
+              "type": "text",
+              "required": true,
+              "placeholder": "Full title of the study"
+            },
+            {
+              "id": "short_title",
+              "label": "Short title",
+              "type": "text",
+              "required": false
+            },
+            {
+              "id": "study_id",
+              "label": "Study ID",
+              "type": "text",
+              "required": false,
+              "help": "Internal identifier, if one exists."
+            },
+            {
+              "id": "registration_platform",
+              "label": "Registration platform",
+              "type": "select",
+              "required": true,
+              "options": [
+                "OSF",
+                "AsPredicted",
+                "ClinicalTrials.gov",
+                "PsychArchives",
+                "Institutional repository",
+                "Not yet decided"
+              ]
+            },
+            {
+              "id": "registration_date",
+              "label": "Registration date",
+              "type": "date",
+              "required": false
+            },
+            {
+              "id": "pi_name",
+              "label": "Principal investigator",
+              "type": "text",
+              "required": true
+            },
+            {
+              "id": "pi_affiliation",
+              "label": "PI affiliation",
+              "type": "text",
+              "required": true
+            },
+            {
+              "id": "pi_orcid",
+              "label": "PI ORCID",
+              "type": "text",
+              "required": false,
+              "placeholder": "0000-0000-0000-0000"
+            },
+            {
+              "id": "corresponding_email",
+              "label": "Corresponding author email",
+              "type": "text",
+              "required": false
+            },
+            {
+              "id": "institutions",
+              "label": "Institution(s)",
+              "type": "list",
+              "required": false
+            },
+            {
+              "id": "funding",
+              "label": "Funding sources",
+              "type": "textarea",
+              "required": false,
+              "help": "Agency and grant number, or 'none'."
+            },
+            {
+              "id": "conflicts",
+              "label": "Conflicts of interest",
+              "type": "textarea",
+              "required": false
+            }
+          ]
+        },
+        {
+          "id": "study-information",
+          "title": "Study Information",
+          "required": true,
+          "intro": "The research question and the predictions being tested.",
+          "fields": [
+            {
+              "id": "research_question",
+              "label": "Research question(s)",
+              "type": "textarea",
+              "required": true
+            },
+            {
+              "id": "hypotheses",
+              "label": "Hypotheses",
+              "type": "textarea",
+              "required": true,
+              "help": "State each hypothesis and whether it is directional."
+            },
+            {
+              "id": "study_type",
+              "label": "Study type",
+              "type": "select",
+              "required": true,
+              "options": [
+                "Experimental",
+                "Observational",
+                "Correlational",
+                "Longitudinal",
+                "Cross-sectional",
+                "Other"
+              ]
+            },
+            {
+              "id": "research_domain",
+              "label": "Research domain",
+              "type": "select",
+              "required": false,
+              "options": [
+                "Cognitive neuroscience",
+                "Affective neuroscience",
+                "Clinical neuroscience",
+                "Social neuroscience",
+                "Developmental neuroscience",
+                "Other"
+              ]
+            },
+            {
+              "id": "prereg_type",
+              "label": "Preregistration type",
+              "type": "select",
+              "required": true,
+              "options": [
+                "Before data collection",
+                "Before data analysis (data already collected)",
+                "Registered Report (Stage 1)"
+              ]
+            },
+            {
+              "id": "design_summary",
+              "label": "Design summary",
+              "type": "textarea",
+              "required": false,
+              "help": "Factors, levels and how participants are allocated."
+            }
+          ]
+        },
+        {
+          "id": "participants",
+          "title": "Participants",
+          "required": true,
+          "intro": "Who takes part, how many, and when collection stops.",
+          "fields": [
+            {
+              "id": "target_n",
+              "label": "Target sample size",
+              "type": "number",
+              "required": true,
+              "min": 1,
+              "max": 1000000
+            },
+            {
+              "id": "power_analysis",
+              "label": "Power analysis / sample size justification",
+              "type": "textarea",
+              "required": true,
+              "help": "Software, assumed effect size, alpha and power."
+            },
+            {
+              "id": "inclusion",
+              "label": "Inclusion criteria",
+              "type": "textarea",
+              "required": true
+            },
+            {
+              "id": "exclusion",
+              "label": "Exclusion criteria",
+              "type": "textarea",
+              "required": true
+            },
+            {
+              "id": "recruitment",
+              "label": "Recruitment procedure",
+              "type": "textarea",
+              "required": false
+            },
+            {
+              "id": "compensation",
+              "label": "Compensation",
+              "type": "text",
+              "required": false
+            },
+            {
+              "id": "stopping_rule",
+              "label": "Stopping rule",
+              "type": "textarea",
+              "required": true,
+              "help": "The condition under which data collection ends."
+            }
+          ]
+        },
+        {
+          "id": "eeg-acquisition",
+          "title": "EEG Data Acquisition",
+          "required": true,
+          "intro": "Hardware and recording parameters. Ranges follow configs/eeg-config.json.",
+          "fields": [
+            {
+              "id": "system",
+              "label": "EEG system and manufacturer",
+              "type": "text",
+              "required": true
+            },
+            {
+              "id": "electrodes",
+              "label": "Number of electrodes",
+              "type": "number",
+              "required": true,
+              "min": 1,
+              "max": 512
+            },
+            {
+              "id": "montage",
+              "label": "Montage",
+              "type": "text",
+              "required": false,
+              "placeholder": "10-20, 10-10, 64-channel cap"
+            },
+            {
+              "id": "reference",
+              "label": "Reference electrode",
+              "type": "text",
+              "required": true
+            },
+            {
+              "id": "ground",
+              "label": "Ground electrode",
+              "type": "text",
+              "required": false
+            },
+            {
+              "id": "sampling_rate",
+              "label": "Sampling rate",
+              "type": "number",
+              "unit": "Hz",
+              "required": true,
+              "min": 100,
+              "max": 10000
+            },
+            {
+              "id": "online_filters",
+              "label": "Online filters",
+              "type": "text",
+              "required": false,
+              "placeholder": "0.1-100 Hz bandpass, 50 Hz notch"
+            },
+            {
+              "id": "impedance",
+              "label": "Impedance threshold",
+              "type": "text",
+              "required": false,
+              "placeholder": "< 10 kOhm"
+            }
+          ]
+        },
+        {
+          "id": "eeg-paradigm",
+          "title": "Experimental Paradigm",
+          "required": true,
+          "intro": "What participants do and how trials are structured.",
+          "fields": [
+            {
+              "id": "task",
+              "label": "Task description",
+              "type": "textarea",
+              "required": true
+            },
+            {
+              "id": "stimuli",
+              "label": "Stimuli",
+              "type": "textarea",
+              "required": true
+            },
+            {
+              "id": "trials_per_condition",
+              "label": "Trials per condition",
+              "type": "number",
+              "required": true,
+              "min": 1,
+              "max": 10000
+            },
+            {
+              "id": "trial_duration",
+              "label": "Trial duration",
+              "type": "text",
+              "required": false,
+              "placeholder": "2000 ms"
+            },
+            {
+              "id": "breaks",
+              "label": "Breaks and session duration",
+              "type": "text",
+              "required": false
+            },
+            {
+              "id": "instructions",
+              "label": "Instructions to participants",
+              "type": "textarea",
+              "required": false
+            }
+          ]
+        },
+        {
+          "id": "eeg-preprocessing",
+          "title": "Preprocessing Plan",
+          "required": true,
+          "intro": "Offline filtering, referencing, artefact handling and epoching.",
+          "fields": [
+            {
+              "id": "highpass",
+              "label": "High-pass filter",
+              "type": "text",
+              "required": true,
+              "placeholder": "0.1 Hz"
+            },
+            {
+              "id": "lowpass",
+              "label": "Low-pass filter",
+              "type": "text",
+              "required": true,
+              "placeholder": "30 Hz"
+            },
+            {
+              "id": "notch",
+              "label": "Notch filter",
+              "type": "text",
+              "required": false,
+              "placeholder": "50 Hz"
+            },
+            {
+              "id": "rereference",
+              "label": "Re-referencing strategy",
+              "type": "text",
+              "required": true
+            },
+            {
+              "id": "artifact_method",
+              "label": "Artefact detection and rejection",
+              "type": "textarea",
+              "required": true
+            },
+            {
+              "id": "ica",
+              "label": "ICA approach",
+              "type": "select",
+              "required": true,
+              "options": [
+                "ICA with manual component rejection",
+                "ICA with automated rejection",
+                "No ICA"
+              ]
+            },
+            {
+              "id": "bad_channels",
+              "label": "Bad channel handling",
+              "type": "text",
+              "required": false
+            },
+            {
+              "id": "epoch_window",
+              "label": "Epoching window",
+              "type": "text",
+              "required": true,
+              "placeholder": "-200 to 800 ms"
+            },
+            {
+              "id": "baseline",
+              "label": "Baseline correction",
+              "type": "text",
+              "required": true,
+              "placeholder": "-200 to 0 ms"
+            }
+          ]
+        },
+        {
+          "id": "eeg-analysis",
+          "title": "Analysis Plan",
+          "required": true,
+          "intro": "Components, windows, electrodes and the statistical model.",
+          "fields": [
+            {
+              "id": "components",
+              "label": "Components of interest",
+              "type": "text",
+              "required": true,
+              "placeholder": "N1, P3, N400"
+            },
+            {
+              "id": "time_windows",
+              "label": "Time windows",
+              "type": "textarea",
+              "required": true
+            },
+            {
+              "id": "electrodes_roi",
+              "label": "Electrodes / regions of interest",
+              "type": "textarea",
+              "required": true
+            },
+            {
+              "id": "measure",
+              "label": "Amplitude measure",
+              "type": "select",
+              "required": true,
+              "options": [
+                "Mean amplitude",
+                "Peak amplitude",
+                "Peak-to-peak",
+                "Latency"
+              ]
+            },
+            {
+              "id": "statistical_test",
+              "label": "Statistical test",
+              "type": "text",
+              "required": true
+            },
+            {
+              "id": "correction",
+              "label": "Multiple comparison correction",
+              "type": "text",
+              "required": true
+            },
+            {
+              "id": "alpha",
+              "label": "Alpha level",
+              "type": "text",
+              "required": true,
+              "placeholder": "0.05"
+            }
+          ]
+        },
+        {
+          "id": "ethics",
+          "title": "Ethics & Data Management",
+          "required": true,
+          "intro": "Approval status, consent, anonymisation and sharing. Applies to every modality.",
+          "fields": [
+            {
+              "id": "ethics_status",
+              "label": "Ethics approval status",
+              "type": "select",
+              "required": true,
+              "options": [
+                "Approved",
+                "Pending",
+                "Not yet submitted",
+                "Exempt"
+              ]
+            },
+            {
+              "id": "ethics_committee",
+              "label": "Ethics committee",
+              "type": "text",
+              "required": false
+            },
+            {
+              "id": "approval_number",
+              "label": "Approval number",
+              "type": "text",
+              "required": false
+            },
+            {
+              "id": "approval_date",
+              "label": "Approval date",
+              "type": "date",
+              "required": false
+            },
+            {
+              "id": "consent_procedure",
+              "label": "Consent procedure",
+              "type": "select",
+              "required": true,
+              "options": [
+                "Written consent",
+                "Electronic consent",
+                "Verbal consent (documented)"
+              ]
+            },
+            {
+              "id": "anonymization",
+              "label": "Anonymisation method",
+              "type": "select",
+              "required": true,
+              "options": [
+                "Direct identifiers removed",
+                "Pseudonymisation (coded)",
+                "Full anonymisation"
+              ]
+            },
+            {
+              "id": "data_sharing",
+              "label": "Data sharing level",
+              "type": "select",
+              "required": true,
+              "options": [
+                "Raw data",
+                "Preprocessed data",
+                "Summary statistics only",
+                "Statistical maps / results only",
+                "Not shared"
+              ]
+            },
+            {
+              "id": "repository",
+              "label": "Data repository",
+              "type": "text",
+              "required": false,
+              "placeholder": "OSF, OpenNeuro, PsychArchives..."
+            },
+            {
+              "id": "gdpr",
+              "label": "GDPR applies",
+              "type": "select",
+              "required": false,
+              "options": [
+                "Yes",
+                "No",
+                "N/A"
+              ]
+            },
+            {
+              "id": "retention",
+              "label": "Retention period",
+              "type": "text",
+              "required": false
+            }
+          ]
+        }
+      ],
+      "validationPatterns": {
+        "sampling_rate_range": [
+          100,
+          10000
+        ],
+        "filter_range": [
+          0.01,
+          500
+        ],
+        "epoch_length_range": [
+          100,
+          5000
+        ]
+      },
+      "filePatterns": [
+        ".set",
+        ".vhdr",
+        ".eeg",
+        ".bdf",
+        ".fdt"
+      ],
+      "software": [
+        "eeglab",
+        "mne",
+        "fieldtrip"
+      ],
+      "library": {
+        "templateHeadings": [
+          {
+            "level": 2,
+            "text": "Overview"
+          },
+          {
+            "level": 2,
+            "text": "Purpose"
+          },
+          {
+            "level": 2,
+            "text": "Key Sections to Include"
+          },
+          {
+            "level": 3,
+            "text": "1. Study Information"
+          },
+          {
+            "level": 3,
+            "text": "2. Design"
+          },
+          {
+            "level": 3,
+            "text": "3. Participants"
+          },
+          {
+            "level": 3,
+            "text": "4. EEG Data Acquisition"
+          },
+          {
+            "level": 3,
+            "text": "5. Experimental Paradigm"
+          },
+          {
+            "level": 3,
+            "text": "6. Preprocessing Pipeline"
+          },
+          {
+            "level": 3,
+            "text": "7. ERP Analysis"
+          },
+          {
+            "level": 3,
+            "text": "8. Statistical Analysis"
+          },
+          {
+            "level": 3,
+            "text": "9. Exclusion Criteria"
+          },
+          {
+            "level": 3,
+            "text": "10. Deviations"
+          },
+          {
+            "level": 2,
+            "text": "References"
+          },
+          {
+            "level": 2,
+            "text": "Additional Resources"
+          },
+          {
+            "level": 2,
+            "text": "Notes"
+          }
+        ],
+        "templateMarkdown": "# EEG/ERP Preregistration Template Guide\n\n## Overview\n\nThis template guides researchers who wish to preregister their EEG projects, specifically studies investigating event-related potentials (ERPs) in the sensor space. It is based on the community-driven EEG and ERP Methods Preregistration Template developed through collaborative hackathons.\n\n## Purpose\n\nPreregistration helps:\n- Distinguish confirmatory from exploratory research\n- Increase transparency in EEG/ERP research\n- Reduce bias and improve robustness of findings\n- Document complex preprocessing and analysis decisions\n\n## Key Sections to Include\n\n### 1. Study Information\n- Title\n- Authors\n- Research question(s)\n- Hypotheses (directional and non-directional)\n\n### 2. Design\n- Study type (e.g., experimental, observational)\n- Blinding procedures\n- Randomization procedures\n- Sample size and power analysis\n\n### 3. Participants\n- Inclusion/exclusion criteria\n- Recruitment procedures\n- Planned sample size with justification\n- Stopping rule (when to stop data collection)\n\n### 4. EEG Data Acquisition\n- EEG system and manufacturer\n- Number of electrodes and montage\n- Reference electrode(s)\n- Ground electrode\n- Sampling rate\n- Online filters (high-pass, low-pass, notch)\n- Impedance threshold\n\n### 5. Experimental Paradigm\n- Task description\n- Stimulus types and presentation\n- Trial structure and timing\n- Number of trials per condition\n- Breaks and session duration\n- Instructions to participants\n\n### 6. Preprocessing Pipeline\n- Offline filtering (high-pass, low-pass, notch filters)\n- Re-referencing strategy\n- Artifact detection and rejection criteria\n  - Eye movement artifacts (EOG)\n  - Muscle artifacts (EMG)\n  - Other artifacts\n- Independent Component Analysis (ICA) approach\n- Bad channel detection and interpolation\n- Epoching parameters (time window, baseline)\n- Baseline correction method\n\n### 7. ERP Analysis\n- Components of interest (e.g., N1, P3, N400)\n- Time windows for analysis\n- Electrode selection/regions of interest\n- Peak detection vs. mean amplitude\n- Statistical approach for ERP analysis\n\n### 8. Statistical Analysis\n- Dependent variables\n- Independent variables\n- Statistical tests planned\n- Multiple comparison corrections\n- Alpha level\n- Handling of missing data\n- Planned sensitivity analyses\n\n### 9. Exclusion Criteria\n- Participant-level exclusions\n- Trial-level exclusions\n- Minimum number of trials per condition\n- Data quality thresholds\n\n### 10. Deviations\n- How deviations from this preregistration will be documented\n- Distinction between confirmatory and exploratory analyses\n\n## References\n\nThis template is based on:\n- Govaart, G. H., Schettino, A., et al. (2025). EEG ERP Preregistration Template. MetaArXiv. https://doi.org/10.31222/osf.io/4nvpt\n- Pernet, C. R., Appelhoff, S., Gorgolewski, K. J., et al. (2020). Issues and recommendations from the OHBM COBIDAS MEEG committee for reproducible EEG and MEG research. Nature Neuroscience, 24, 1473-1474. https://doi.org/10.1038/s41593-020-00710-7\n- Making ERP Research More Transparent: Guidelines for Preregistration (International Journal of Psychophysiology)\n- Center for Open Science (COS) EEG and ERP Methods Template\n\n## Additional Resources\n\n- OSF Preregistration: https://osf.io/registries\n- COBIDAS MEEG Blog: https://cobidasmeeg.wordpress.com/ (Best practices for MEG/EEG study design, analysis, and reporting)\n- COBIDAS MEEG OSF Preprint: https://osf.io/a8dhx\n- EEG/ERP Methods Template on OSF\n- MPI CBS Preregistration Hackathon materials\n\n## Notes\n\n- Be as specific as possible while acknowledging uncertainty\n- If a decision hasn't been made, state \"not decided yet\" or list options A and B\n- Update the preregistration if methods change, documenting all deviations\n- This template encourages thoroughness - use it as a planning tool, not just a checkbox\n",
+        "skillMarkdown": "# EEG/ERP Preregistration Skill\n\n## Description\n\nAnalyzes EEG/ERP research projects and generates comprehensive preregistration documents following community standards. Detects EEG system details, preprocessing parameters, and analysis plan from existing files.\n\n## Objective\n\nGenerate modality-appropriate EEG/ERP preregistration by:\n1. Confirming EEG/ERP modality\n2. Extracting EEG acquisition parameters from scripts and documentation\n3. Detecting preprocessing pipeline decisions\n4. Extracting statistical analysis plan\n5. Creating preregistration draft using EEG template\n6. Guiding user through missing sections\n\n## Workflow\n\n### Step 1: Confirm Modality\nVerify EEG/ERP detection:\n- Display files found: .set, .vhdr, .fdt files\n- Confirm with user: \"I detected EEG/ERP files. Proceed?\"\n\n### Step 2: Extract EEG Parameters\n\n**From EEGLAB script analysis (.m, .py):**\n- `pop_loadset()` → Identify input data format\n- `pop_chanedit()` → Reference electrode, ground electrode\n- `pop_resample()` → Sampling rate changes\n- `pop_eegfilter()` → Online/offline filters (high-pass, low-pass, notch)\n- `pop_runica()` → ICA components\n- `pop_selectdata()` → Trial/epoch extraction\n- `eeglab_topoplot`, `figure` commands → Known electrode montage\n\n**From MNE Python (.py files):**\n- `raw.load_data()` → Data organization\n- `raw.set_eeg_reference()` → Reference electrode\n- `raw.filter()` → Filter parameters\n- `epochs = Epochs()` → Epoch timing (tmin, tmax)\n- `ica = ICA()` → ICA parameters\n- `raw.get_montage()` → Electrode montage\n\n**From documentation:**\n- README: study design, hypothesis\n- Protocol files: participant criteria, task description\n- Data dictionaries: channel naming, sampling rates\n\n### Step 3: Detect Preprocessing Pipeline\n\nSearch scripts for patterns:\n```\nartifact_detection = grep(script, \"reject_\", \"threshold\", \"badchans\")\nica_components = grep(script, \"n_components\", \"ica_fit\", \"exclude\")\nbaseline_correction = grep(script, \"baseline\", \"bl_range\", \"mode\")\ndownsampling = grep(script, \"resample\", \"decim\")\n```\n\nMark confidence for each parameter.\n\n### Step 4: Extract Analysis Plan\n\n**From statistical analysis scripts:**\n- Electrode selection (ROI or mass-univariate)\n- Time windows (e.g., 100-300ms for P300)\n- Statistical tests (ANOVA, t-test, linear mixed effects)\n- Multiple comparisons correction (cluster, FDR, Bonferroni)\n- Effect size reporting\n\n**Keywords to search:**\n- `erp`, `component`, `latency`, `amplitude`\n- `stat.f_oneway`, `ttest_ind`, `lmm`, `lmer`\n- `cluster`, `p.adjust`, `mne.stats`\n\n### Step 5: Generate Draft\n\nCreate `PREREGISTRATION_DRAFT.md` with:\n- **Metadata** (from METADATA_SCHEMA.md)\n- **Study Information** (title, hypotheses, design)\n- **EEG Acquisition** (filled from scripts + [VERIFY:])\n- **Preprocessing** (filled from scripts + [TO BE COMPLETED])\n- **Statistical Analysis** (filled from scripts + [TO BE COMPLETED])\n- **Ethics** (from ETHICS_PRIVACY_TEMPLATE.md)\n\n### Step 6: Interactive Completion\n\nGuide user through sections:\n1. Confirm detected EEG parameters\n2. Specify preprocessing decisions not found in scripts\n3. Detail statistical analysis plan\n4. Complete missing sections\n5. Review final document\n\n## Detection Patterns\n\n### File Extensions\n- `.set` - EEGLAB dataset\n- `.vhdr` - BrainVision header (Neuroscan)\n- `.fdt` - EEGLAB data file\n- `.eeg` - Generic EEG\n- `.bdf` - BioSemi format\n\n### Script Keywords (EEGLAB/MNE)\n- `eeglab`, `pop_loadset`, `pop_eegfilter`\n- `mne`, `raw.filter`, `Epochs`, `ICA`\n- `fieldtrip`, `ft_preprocessing`, `ft_timelockanalysis`\n- `electrode`, `montage`, `reference`, `ICA`, `ERP`, `component`\n\n### Documentation Keywords\n- `electrode montage`, `impedance`, `artifact`, `preprocessing`\n- `sampling rate`, `filter`, `high-pass`, `low-pass`\n- `ICA`, `component`, `rejection criteria`\n\n## Output Format\n\n```markdown\n# Preregistration: [Study Title]\n\n## Metadata\n[From METADATA_SCHEMA.md - all fields required]\n\n## Study Information\n- Research question: [extracted or TO BE COMPLETED]\n- Hypotheses: [extracted or TO BE COMPLETED]\n- Design: [extracted]\n\n## Participants\n- N: [extracted or TO BE COMPLETED]\n- Inclusion/exclusion: [TO BE COMPLETED]\n- Compensation: [TO BE COMPLETED]\n\n## EEG Acquisition\n- System: [detected from scripts: EEGLAB/BrainVision/etc.]\n- Electrodes: [montage if detected]\n- Sampling rate: [VERIFY: detected value]\n- Reference: [VERIFY: detected electrode]\n- Ground: [TO BE COMPLETED]\n- Online filters: [extracted from preprocessing script]\n\n## Experimental Paradigm\n- Task: [TO BE COMPLETED]\n- Stimuli: [TO BE COMPLETED]\n- Trial structure: [TO BE COMPLETED]\n\n## Preprocessing Plan\n- Artifact removal: [extracted from script]\n- ICA: [extracted parameters if present]\n- Re-referencing: [VERIFY: detected value]\n- Baseline correction: [extracted or TO BE COMPLETED]\n- Downsampling: [extracted if present]\n\n## Analysis Plan\n- ERP components: [TO BE COMPLETED]\n- Time windows: [extracted if specified]\n- Electrodes: [extracted if specified]\n- Statistical tests: [extracted from analysis script]\n- Multiple comparisons: [extracted if present]\n\n## Ethics & Data Management\n[From ETHICS_PRIVACY_TEMPLATE.md]\n```\n\n## Behavior Rules\n\n1. **Always scan script files** before asking about parameters\n2. **Mark confidence levels** for each detection:\n   - ✓ High (direct in script, >2 mentions)\n   - ~ Medium (inferred from patterns)\n   - ? Low (guess, needs verification)\n3. **Never modify** project files\n4. **Ask focused questions** - one section at a time\n5. **Provide examples** for user input fields\n6. **Save as** `PREREGISTRATION_DRAFT.md` in project root\n\n## Example Interaction\n\n```\nUser: Create a preregistration\n\nAgent:\n1. ✓ Confirms: \"I found .set files. Continuing with EEG/ERP...\"\n2. Scans scripts:\n   - Finds: pop_eegfilter(EEG, 0.5, 40) → 0.5-40 Hz\n   - Finds: pop_chanedit(EEG, 'ref', 'FCz') → Reference: FCz\n   - Finds: erp_times = [100 300] → Time window: 100-300ms\n3. Extracts: \"Sampling rate 500 Hz, EEGLAB dataset format\"\n4. Generates draft with:\n   - ✓ EEG system: EEGLAB\n   - ✓ Filters: 0.5-40 Hz\n   - ~ Reference: FCz (verify)\n   - ? Components detected: [TO BE COMPLETED]\n5. Asks:\n   - \"Confirm reference as FCz?\"\n   - \"What components are you analyzing?\"\n   - \"Define artifact rejection thresholds\"\n6. Saves: PREREGISTRATION_DRAFT.md\n```\n\n## Configuration\n\nLoad from `configs/eeg-config.json`:\n```json\n{\n  \"modality\": \"eeg\",\n  \"template\": \"templates/eeg/EEG_ERP_PREREGISTRATION_GUIDE.md\",\n  \"search_patterns\": {\n    \"software\": [\"eeglab\", \"mne\", \"fieldtrip\"],\n    \"parameters\": [\"pop_eegfilter\", \"raw.filter\", \"Epochs\"],\n    \"keywords\": [\"electrode\", \"component\", \"ICA\", \"ERP\"]\n  },\n  \"required_sections\": [\n    \"Metadata\",\n    \"Study Information\",\n    \"Participants\",\n    \"EEG Acquisition\",\n    \"Experimental Paradigm\",\n    \"Preprocessing Plan\",\n    \"Analysis Plan\",\n    \"Ethics\"\n  ]\n}\n```\n\n## Related Resources\n\n- Template: `templates/eeg/EEG_ERP_PREREGISTRATION_GUIDE.md`\n- Common metadata: `templates/biopsych/common/METADATA_SCHEMA.md`\n- Ethics template: `templates/biopsych/common/ETHICS_PRIVACY_TEMPLATE.md`\n- References: See README.md \"EEG/ERP Templates\" section\n\n## Key References\n\n1. Govaart et al. (2025). EEG ERP Preregistration Template. MetaArXiv. https://doi.org/10.31222/osf.io/4nvpt\n2. Pernet et al. (2020). Issues and recommendations from the OHBM COBIDAS MEEG committee for reproducible EEG and MEG research. Nature Neuroscience, 24, 1473-1474. https://doi.org/10.1038/s41593-020-00710-7\n3. Paul et al. (2021). Making ERP Research More Transparent. International Journal of Psychophysiology.\n"
+      }
+    },
+    {
+      "id": "fmri",
+      "label": "fMRI",
+      "description": "fMRI preregistration skill with BIDS structure parsing",
+      "template": "templates/fmri/FMRI_PREREGISTRATION_GUIDE.md",
+      "templateTitle": "fMRI Preregistration Template Guide",
+      "skill": "skills/fmri/SKILL.md",
+      "requiredSections": [
+        "Metadata",
+        "Study Information",
+        "Participants",
+        "fMRI Acquisition Parameters",
+        "Task Design",
+        "Preprocessing Pipeline",
+        "Statistical Analysis Plan",
+        "Ethics & Data Management"
+      ],
+      "sections": [
+        {
+          "id": "metadata",
+          "title": "Metadata",
+          "required": true,
+          "intro": "Identification and administrative details. Required for every preregistration regardless of modality.",
+          "fields": [
+            {
+              "id": "title",
+              "label": "Study title",
+              "type": "text",
+              "required": true,
+              "placeholder": "Full title of the study"
+            },
+            {
+              "id": "short_title",
+              "label": "Short title",
+              "type": "text",
+              "required": false
+            },
+            {
+              "id": "study_id",
+              "label": "Study ID",
+              "type": "text",
+              "required": false,
+              "help": "Internal identifier, if one exists."
+            },
+            {
+              "id": "registration_platform",
+              "label": "Registration platform",
+              "type": "select",
+              "required": true,
+              "options": [
+                "OSF",
+                "AsPredicted",
+                "ClinicalTrials.gov",
+                "PsychArchives",
+                "Institutional repository",
+                "Not yet decided"
+              ]
+            },
+            {
+              "id": "registration_date",
+              "label": "Registration date",
+              "type": "date",
+              "required": false
+            },
+            {
+              "id": "pi_name",
+              "label": "Principal investigator",
+              "type": "text",
+              "required": true
+            },
+            {
+              "id": "pi_affiliation",
+              "label": "PI affiliation",
+              "type": "text",
+              "required": true
+            },
+            {
+              "id": "pi_orcid",
+              "label": "PI ORCID",
+              "type": "text",
+              "required": false,
+              "placeholder": "0000-0000-0000-0000"
+            },
+            {
+              "id": "corresponding_email",
+              "label": "Corresponding author email",
+              "type": "text",
+              "required": false
+            },
+            {
+              "id": "institutions",
+              "label": "Institution(s)",
+              "type": "list",
+              "required": false
+            },
+            {
+              "id": "funding",
+              "label": "Funding sources",
+              "type": "textarea",
+              "required": false,
+              "help": "Agency and grant number, or 'none'."
+            },
+            {
+              "id": "conflicts",
+              "label": "Conflicts of interest",
+              "type": "textarea",
+              "required": false
+            }
+          ]
+        },
+        {
+          "id": "study-information",
+          "title": "Study Information",
+          "required": true,
+          "intro": "The research question and the predictions being tested.",
+          "fields": [
+            {
+              "id": "research_question",
+              "label": "Research question(s)",
+              "type": "textarea",
+              "required": true
+            },
+            {
+              "id": "hypotheses",
+              "label": "Hypotheses",
+              "type": "textarea",
+              "required": true,
+              "help": "State each hypothesis and whether it is directional."
+            },
+            {
+              "id": "study_type",
+              "label": "Study type",
+              "type": "select",
+              "required": true,
+              "options": [
+                "Experimental",
+                "Observational",
+                "Correlational",
+                "Longitudinal",
+                "Cross-sectional",
+                "Other"
+              ]
+            },
+            {
+              "id": "research_domain",
+              "label": "Research domain",
+              "type": "select",
+              "required": false,
+              "options": [
+                "Cognitive neuroscience",
+                "Affective neuroscience",
+                "Clinical neuroscience",
+                "Social neuroscience",
+                "Developmental neuroscience",
+                "Other"
+              ]
+            },
+            {
+              "id": "prereg_type",
+              "label": "Preregistration type",
+              "type": "select",
+              "required": true,
+              "options": [
+                "Before data collection",
+                "Before data analysis (data already collected)",
+                "Registered Report (Stage 1)"
+              ]
+            },
+            {
+              "id": "design_summary",
+              "label": "Design summary",
+              "type": "textarea",
+              "required": false,
+              "help": "Factors, levels and how participants are allocated."
+            }
+          ]
+        },
+        {
+          "id": "participants",
+          "title": "Participants",
+          "required": true,
+          "intro": "Who takes part, how many, and when collection stops.",
+          "fields": [
+            {
+              "id": "target_n",
+              "label": "Target sample size",
+              "type": "number",
+              "required": true,
+              "min": 1,
+              "max": 1000000
+            },
+            {
+              "id": "power_analysis",
+              "label": "Power analysis / sample size justification",
+              "type": "textarea",
+              "required": true,
+              "help": "Software, assumed effect size, alpha and power."
+            },
+            {
+              "id": "inclusion",
+              "label": "Inclusion criteria",
+              "type": "textarea",
+              "required": true
+            },
+            {
+              "id": "exclusion",
+              "label": "Exclusion criteria",
+              "type": "textarea",
+              "required": true
+            },
+            {
+              "id": "recruitment",
+              "label": "Recruitment procedure",
+              "type": "textarea",
+              "required": false
+            },
+            {
+              "id": "compensation",
+              "label": "Compensation",
+              "type": "text",
+              "required": false
+            },
+            {
+              "id": "stopping_rule",
+              "label": "Stopping rule",
+              "type": "textarea",
+              "required": true,
+              "help": "The condition under which data collection ends."
+            }
+          ]
+        },
+        {
+          "id": "fmri-acquisition",
+          "title": "fMRI Acquisition Parameters",
+          "required": true,
+          "intro": "Scanner and sequence parameters. Ranges follow configs/fmri-config.json.",
+          "fields": [
+            {
+              "id": "scanner",
+              "label": "Scanner manufacturer and model",
+              "type": "text",
+              "required": true
+            },
+            {
+              "id": "field_strength",
+              "label": "Field strength",
+              "type": "select",
+              "required": true,
+              "options": [
+                "1.5T",
+                "3T",
+                "7T",
+                "Other"
+              ]
+            },
+            {
+              "id": "coil",
+              "label": "Head coil",
+              "type": "text",
+              "required": false
+            },
+            {
+              "id": "sequence",
+              "label": "Pulse sequence",
+              "type": "text",
+              "required": true,
+              "placeholder": "EPI, multiband EPI, spiral"
+            },
+            {
+              "id": "tr",
+              "label": "TR",
+              "type": "number",
+              "unit": "s",
+              "required": true,
+              "min": 0.5,
+              "max": 10
+            },
+            {
+              "id": "te",
+              "label": "TE",
+              "type": "number",
+              "unit": "s",
+              "required": true,
+              "min": 0.01,
+              "max": 0.1
+            },
+            {
+              "id": "flip_angle",
+              "label": "Flip angle",
+              "type": "number",
+              "unit": "deg",
+              "required": true,
+              "min": 20,
+              "max": 120
+            },
+            {
+              "id": "voxel_size",
+              "label": "Voxel size",
+              "type": "number",
+              "unit": "mm",
+              "required": true,
+              "min": 1,
+              "max": 5
+            },
+            {
+              "id": "slices",
+              "label": "Number of slices",
+              "type": "number",
+              "required": false,
+              "min": 1,
+              "max": 500
+            },
+            {
+              "id": "multiband",
+              "label": "Multiband / acceleration factor",
+              "type": "text",
+              "required": false
+            },
+            {
+              "id": "volumes",
+              "label": "Volumes per run",
+              "type": "number",
+              "required": false,
+              "min": 1,
+              "max": 10000
+            },
+            {
+              "id": "dummy_scans",
+              "label": "Dummy scans",
+              "type": "number",
+              "required": false,
+              "min": 0,
+              "max": 100
+            }
+          ]
+        },
+        {
+          "id": "fmri-task",
+          "title": "Task Design",
+          "required": true,
+          "intro": "Conditions, contrasts and run structure for task-based fMRI.",
+          "fields": [
+            {
+              "id": "design_type",
+              "label": "Design type",
+              "type": "select",
+              "required": true,
+              "options": [
+                "Event-related",
+                "Block design",
+                "Mixed",
+                "Resting-state"
+              ]
+            },
+            {
+              "id": "task",
+              "label": "Task description",
+              "type": "textarea",
+              "required": true
+            },
+            {
+              "id": "conditions",
+              "label": "Conditions",
+              "type": "textarea",
+              "required": true
+            },
+            {
+              "id": "contrasts",
+              "label": "Contrasts of interest",
+              "type": "textarea",
+              "required": true
+            },
+            {
+              "id": "trials_per_condition",
+              "label": "Trials per condition",
+              "type": "number",
+              "required": false,
+              "min": 1,
+              "max": 10000
+            },
+            {
+              "id": "run_structure",
+              "label": "Run structure",
+              "type": "text",
+              "required": false,
+              "placeholder": "4 runs x 8 min"
+            },
+            {
+              "id": "presentation_software",
+              "label": "Stimulus presentation software",
+              "type": "text",
+              "required": false
+            }
+          ]
+        },
+        {
+          "id": "fmri-preprocessing",
+          "title": "Preprocessing Pipeline",
+          "required": true,
+          "intro": "Software, corrections and normalisation. State versions explicitly.",
+          "fields": [
+            {
+              "id": "software",
+              "label": "Software and version",
+              "type": "text",
+              "required": true,
+              "placeholder": "fMRIPrep 24.0.0, SPM12, FSL 6.0"
+            },
+            {
+              "id": "slice_timing",
+              "label": "Slice timing correction",
+              "type": "text",
+              "required": false
+            },
+            {
+              "id": "motion_correction",
+              "label": "Motion correction",
+              "type": "text",
+              "required": true
+            },
+            {
+              "id": "sdc",
+              "label": "Susceptibility distortion correction",
+              "type": "text",
+              "required": false
+            },
+            {
+              "id": "normalization",
+              "label": "Normalisation",
+              "type": "text",
+              "required": true
+            },
+            {
+              "id": "template_space",
+              "label": "Template space",
+              "type": "text",
+              "required": false,
+              "placeholder": "MNI152NLin2009cAsym"
+            },
+            {
+              "id": "smoothing_fwhm",
+              "label": "Smoothing kernel",
+              "type": "text",
+              "required": false,
+              "placeholder": "6 mm FWHM"
+            },
+            {
+              "id": "temporal_filter",
+              "label": "Temporal filtering",
+              "type": "text",
+              "required": false
+            },
+            {
+              "id": "denoising",
+              "label": "Denoising strategy",
+              "type": "text",
+              "required": false,
+              "placeholder": "CompCor, ICA-AROMA"
+            }
+          ]
+        },
+        {
+          "id": "fmri-analysis",
+          "title": "Statistical Analysis Plan",
+          "required": true,
+          "intro": "First and second level models, ROIs and correction.",
+          "fields": [
+            {
+              "id": "glm_hrf",
+              "label": "GLM and HRF model",
+              "type": "text",
+              "required": true
+            },
+            {
+              "id": "derivatives",
+              "label": "Temporal derivatives",
+              "type": "select",
+              "required": false,
+              "options": [
+                "Included",
+                "Not included"
+              ]
+            },
+            {
+              "id": "nuisance",
+              "label": "Nuisance regressors",
+              "type": "textarea",
+              "required": true
+            },
+            {
+              "id": "first_level_contrasts",
+              "label": "First-level contrasts",
+              "type": "textarea",
+              "required": true
+            },
+            {
+              "id": "group_model",
+              "label": "Group-level model",
+              "type": "text",
+              "required": true
+            },
+            {
+              "id": "roi_definition",
+              "label": "ROI definition",
+              "type": "textarea",
+              "required": false
+            },
+            {
+              "id": "correction_method",
+              "label": "Multiple comparison correction",
+              "type": "select",
+              "required": true,
+              "options": [
+                "FWE",
+                "FDR",
+                "Cluster-based",
+                "Small volume correction",
+                "None"
+              ]
+            },
+            {
+              "id": "cluster_threshold",
+              "label": "Cluster-forming threshold",
+              "type": "text",
+              "required": false
+            },
+            {
+              "id": "alpha",
+              "label": "Alpha level",
+              "type": "text",
+              "required": true,
+              "placeholder": "0.05"
+            }
+          ]
+        },
+        {
+          "id": "ethics",
+          "title": "Ethics & Data Management",
+          "required": true,
+          "intro": "Approval status, consent, anonymisation and sharing. Applies to every modality.",
+          "fields": [
+            {
+              "id": "ethics_status",
+              "label": "Ethics approval status",
+              "type": "select",
+              "required": true,
+              "options": [
+                "Approved",
+                "Pending",
+                "Not yet submitted",
+                "Exempt"
+              ]
+            },
+            {
+              "id": "ethics_committee",
+              "label": "Ethics committee",
+              "type": "text",
+              "required": false
+            },
+            {
+              "id": "approval_number",
+              "label": "Approval number",
+              "type": "text",
+              "required": false
+            },
+            {
+              "id": "approval_date",
+              "label": "Approval date",
+              "type": "date",
+              "required": false
+            },
+            {
+              "id": "consent_procedure",
+              "label": "Consent procedure",
+              "type": "select",
+              "required": true,
+              "options": [
+                "Written consent",
+                "Electronic consent",
+                "Verbal consent (documented)"
+              ]
+            },
+            {
+              "id": "anonymization",
+              "label": "Anonymisation method",
+              "type": "select",
+              "required": true,
+              "options": [
+                "Direct identifiers removed",
+                "Pseudonymisation (coded)",
+                "Full anonymisation"
+              ]
+            },
+            {
+              "id": "data_sharing",
+              "label": "Data sharing level",
+              "type": "select",
+              "required": true,
+              "options": [
+                "Raw data",
+                "Preprocessed data",
+                "Summary statistics only",
+                "Statistical maps / results only",
+                "Not shared"
+              ]
+            },
+            {
+              "id": "repository",
+              "label": "Data repository",
+              "type": "text",
+              "required": false,
+              "placeholder": "OSF, OpenNeuro, PsychArchives..."
+            },
+            {
+              "id": "gdpr",
+              "label": "GDPR applies",
+              "type": "select",
+              "required": false,
+              "options": [
+                "Yes",
+                "No",
+                "N/A"
+              ]
+            },
+            {
+              "id": "retention",
+              "label": "Retention period",
+              "type": "text",
+              "required": false
+            }
+          ]
+        }
+      ],
+      "validationPatterns": {
+        "tr_range": [
+          0.5,
+          10
+        ],
+        "te_range": [
+          0.01,
+          0.1
+        ],
+        "fa_range": [
+          20,
+          120
+        ],
+        "voxel_size_range": [
+          1,
+          5
+        ]
+      },
+      "filePatterns": [
+        ".nii",
+        ".nii.gz"
+      ],
+      "software": [
+        "spm",
+        "fsl",
+        "fmriprep"
+      ],
+      "library": {
+        "templateHeadings": [
+          {
+            "level": 2,
+            "text": "Overview"
+          },
+          {
+            "level": 2,
+            "text": "Purpose"
+          },
+          {
+            "level": 2,
+            "text": "Key Sections to Include"
+          },
+          {
+            "level": 3,
+            "text": "1. Study Information"
+          },
+          {
+            "level": 3,
+            "text": "2. Participants"
+          },
+          {
+            "level": 3,
+            "text": "3. MRI Data Acquisition"
+          },
+          {
+            "level": 3,
+            "text": "4. Anatomical Scans"
+          },
+          {
+            "level": 3,
+            "text": "5. Task Design (for task-based fMRI)"
+          },
+          {
+            "level": 3,
+            "text": "6. Preprocessing Pipeline"
+          },
+          {
+            "level": 3,
+            "text": "7. Quality Control"
+          },
+          {
+            "level": 3,
+            "text": "8. First-Level (Within-Subject) Analysis"
+          },
+          {
+            "level": 3,
+            "text": "9. Second-Level (Group) Analysis"
+          },
+          {
+            "level": 3,
+            "text": "10. Multiple Comparisons Correction"
+          },
+          {
+            "level": 3,
+            "text": "11. Connectivity Analysis (if applicable)"
+          },
+          {
+            "level": 3,
+            "text": "12. Statistical Analysis"
+          },
+          {
+            "level": 3,
+            "text": "13. Data Exclusion"
+          },
+          {
+            "level": 3,
+            "text": "14. Data Sharing"
+          },
+          {
+            "level": 2,
+            "text": "References"
+          },
+          {
+            "level": 2,
+            "text": "Additional Resources"
+          },
+          {
+            "level": 2,
+            "text": "Notes"
+          }
+        ],
+        "templateMarkdown": "# fMRI Preregistration Template Guide\n\n## Overview\n\nThis template provides guidance for preregistering fMRI studies to increase reproducibility and transparency. It is based on the fMRI preregistration template developed through community hackathons and published on PsychArchives.\n\n## Purpose\n\nPreregistration of fMRI studies helps:\n- Increase reproducibility of neuroimaging research\n- Distinguish confirmatory from exploratory analyses\n- Document complex preprocessing and analysis pipelines\n- Reduce flexibility in data analysis (researcher degrees of freedom)\n\n## Key Sections to Include\n\n### 1. Study Information\n- Title\n- Authors and affiliations\n- Research question(s)\n- Hypotheses (with directionality when applicable)\n- Study design (e.g., block design, event-related, resting-state)\n\n### 2. Participants\n- Target sample size with justification (power analysis)\n- Inclusion criteria\n- Exclusion criteria (general and MRI-specific)\n- Recruitment strategy\n- Stopping rule for data collection\n- Compensation\n\n### 3. MRI Data Acquisition\n- Scanner manufacturer and model\n- Field strength (e.g., 3T, 7T)\n- Head coil type\n- Pulse sequence (e.g., EPI, spiral)\n- Acquisition parameters:\n  - TR (repetition time)\n  - TE (echo time)\n  - Flip angle\n  - Voxel size\n  - Matrix size\n  - Number of slices\n  - Slice orientation and order\n  - Field of view (FOV)\n  - Multiband/acceleration factor (if applicable)\n- Number of volumes/runs\n- Dummy scans\n- Physiological monitoring (cardiac, respiratory)\n\n### 4. Anatomical Scans\n- T1-weighted sequence parameters\n- Other structural scans (T2, FLAIR, etc.)\n- Purpose of each anatomical scan\n\n### 5. Task Design (for task-based fMRI)\n- Task description\n- Conditions and contrasts of interest\n- Trial structure and timing\n- Stimulus presentation software\n- Response collection method\n- Number of trials per condition\n- Run structure\n- Instructions to participants\n\n### 6. Preprocessing Pipeline\n- Software and version (e.g., SPM12, FSL 6.0, fMRIPrep)\n- Slice timing correction\n- Motion correction algorithm\n- Susceptibility distortion correction\n- Co-registration to anatomical image\n- Normalization/spatial transformation\n  - Template space (e.g., MNI152)\n  - Resampling resolution\n- Smoothing kernel (FWHM)\n- Temporal filtering (high-pass, low-pass)\n- Denoising strategies (e.g., CompCor, ICA-AROMA)\n- Handling of physiological noise\n\n### 7. Quality Control\n- Motion thresholds for exclusion\n  - Framewise displacement (FD) threshold\n  - Percentage of volumes with excessive motion\n- Signal-to-noise ratio criteria\n- Visual inspection procedures\n- Outlier detection methods\n\n### 8. First-Level (Within-Subject) Analysis\n- General Linear Model (GLM) specification\n- Hemodynamic response function (HRF) model\n- Temporal derivatives included?\n- Motion parameters as regressors\n- Other nuisance regressors\n- Contrasts of interest\n- Statistical threshold\n\n### 9. Second-Level (Group) Analysis\n- Group-level model type (e.g., one-sample t-test, ANOVA, regression)\n- Between-subject factors\n- Covariates\n- Regions of interest (ROI) definition\n  - Anatomical ROIs\n  - Functional ROIs\n  - Independent localizer\n- Whole-brain vs. ROI analysis\n- Small volume correction (if applicable)\n\n### 10. Multiple Comparisons Correction\n- Correction method (e.g., FWE, FDR, cluster-based)\n- Cluster-forming threshold\n- Final significance threshold\n- Software for correction\n\n### 11. Connectivity Analysis (if applicable)\n- Type of connectivity (functional, effective)\n- Seed regions or network definition\n- Analysis method (e.g., seed-based correlation, PPI, DCM)\n\n### 12. Statistical Analysis\n- Primary outcome measures\n- Secondary outcome measures\n- Planned statistical tests\n- Alpha level\n- Handling of missing data\n- Planned sensitivity analyses\n- Exploratory analyses (clearly labeled)\n\n### 13. Data Exclusion\n- Participant exclusion criteria\n  - Excessive motion\n  - Scanner artifacts\n  - Incidental findings\n  - Task performance\n- Run/volume exclusion criteria\n- Minimum data requirements per participant\n\n### 14. Data Sharing\n- Will data be shared? (Yes/No)\n- Repository (e.g., OpenNeuro, NeuroVault)\n- BIDS format compliance\n- Level of data sharing (raw, preprocessed, statistical maps)\n\n## References\n\nThis template is based on:\n- Beyer, F., Flannery, J., Gau, R., et al. (2021). A fMRI pre-registration template. PsychArchives. https://doi.org/10.23668/PSYCHARCHIVES.5121\n- OSF fMRI Preregistration Template: https://osf.io/6juft/\n- GitHub: jessicaflannery/fmri-prereg\n\n## Additional Resources\n\n- COBIDAS (Committee on Best Practices in Data Analysis and Sharing) guidelines\n- BIDS (Brain Imaging Data Structure) specification\n- fMRIPrep documentation\n- NeuroVault for sharing statistical maps\n- OpenNeuro for sharing raw data\n\n## Notes\n\n- Specify software versions for all tools used\n- Be explicit about all preprocessing steps and their order\n- Document any deviations from this preregistration\n- Consider using containerization (Docker, Singularity) for reproducibility\n- Preregister before data collection when possible, or before data analysis if data already collected\n",
+        "skillMarkdown": "# fMRI Preregistration Skill\n\n## Description\n\nAnalyzes fMRI research projects and generates comprehensive preregistration documents. Detects fMRI acquisition parameters, preprocessing pipeline, and statistical analysis plan from BIDS structure and scripts.\n\n## Objective\n\nGenerate modality-appropriate fMRI preregistration by:\n1. Confirming fMRI modality\n2. Extracting acquisition parameters from BIDS metadata and data files\n3. Detecting preprocessing pipeline (SPM, FSL, fMRIPrep)\n4. Extracting statistical analysis plan (GLM, contrasts)\n5. Creating preregistration draft using fMRI template\n6. Guiding user through missing sections\n\n## Workflow\n\n### Step 1: Confirm Modality\nVerify fMRI detection:\n- Display files found: .nii, .nii.gz files\n- Check for BIDS structure: `sub-*/func/*.nii.gz`\n- Confirm with user: \"I detected fMRI files (BIDS format). Proceed?\"\n\n### Step 2: Extract fMRI Parameters\n\n**From BIDS structure:**\n- `sub-*/func/*_bold.nii.gz` → Functional images\n- `sub-*/anat/*_T1w.nii.gz` → Structural images\n- `sub-*/func/*_bold.json` → Acquisition parameters (TR, TE, FA, voxel size)\n\n**From JSON sidecars (automatic BIDS extraction):**\n```json\n{\n  \"EchoTime\": 0.030,\n  \"RepetitionTime\": 2.0,\n  \"FlipAngle\": 90,\n  \"VoxelSize\": [3, 3, 3],\n  \"NumberOfVolumesDiscardedAtBeginning\": 5,\n  \"MagneticFieldStrength\": 3.0\n}\n```\n\n**From preprocessing scripts (SPM, FSL, fMRIPrep):**\n- `spm_preproc.m` → SPM12 parameters\n- `feat design.fsf` → FSL settings\n- `fmriprep` command → fMRIPrep configuration\n- `flirt`, `fnirt` commands → Registration parameters\n\n**From analysis scripts (.m, .py, .R):**\n- SPM.stats.fmri_spec → GLM design\n- SPM.stats.fmri_est → Estimation method\n- Contrast definitions → Statistical contrasts\n- `glm`, `lm`, `lmer` in Python/R → Model specification\n\n### Step 3: Detect Preprocessing Pipeline\n\nSearch for software indicators:\n```\nSPM detected: grep for \"spm\", \"spm12\", \"spm_preproc\"\nFSL detected: grep for \"flirt\", \"fnirt\", \"feat\", \"fslmaths\"\nfMRIPrep detected: grep for \"fmriprep\", \"bids\"\nCustom pipeline: grep for preprocessing steps\n```\n\nExtract parameters:\n- **Realignment/Motion correction**: detected motion parameters\n- **Normalization**: standard space (MNI152 2mm, etc.)\n- **Smoothing**: kernel size (e.g., 6mm FWHM)\n- **Registration**: linear vs. nonlinear\n\n### Step 4: Extract Statistical Analysis Plan\n\n**From GLM design:**\n- Regressors: main effects and conditions\n- Covariates: motion parameters, confounds\n- Contrasts: specific comparisons (e.g., task > rest)\n- Duration of effects: stick/parametric/time-expanded\n\n**From statistical scripts:**\n- Test type: univariate GLM, multivariate, ROI analysis\n- Multiple comparisons correction: cluster extent, FWE, FDR\n- Thresholds: p-values, k-values (minimum cluster size)\n- Exclusion criteria: motion (FD), DVARS thresholds\n\n### Step 5: Generate Draft\n\nCreate `PREREGISTRATION_DRAFT.md` with:\n- **Metadata** (from METADATA_SCHEMA.md)\n- **Study Information** (title, hypotheses, design)\n- **fMRI Acquisition** (extracted from BIDS)\n- **Participant Information** (N, criteria)\n- **Data Acquisition** (sequence parameters)\n- **Preprocessing** (detected pipeline + parameters)\n- **Statistical Analysis** (GLM, contrasts, thresholds)\n- **Ethics** (from ETHICS_PRIVACY_TEMPLATE.md)\n\n### Step 6: Interactive Completion\n\nGuide user through sections:\n1. Verify BIDS structure and acquisition parameters\n2. Confirm preprocessing pipeline and parameters\n3. Detail statistical analysis plan and contrasts\n4. Specify ROIs if relevant\n5. Define thresholds and multiple comparisons correction\n6. Complete missing sections\n\n## Detection Patterns\n\n### File Extensions & Structure\n- `.nii` - Uncompressed NIfTI image\n- `.nii.gz` - Compressed NIfTI image (standard)\n- `.json` - BIDS metadata sidecar\n- BIDS structure: `sub-*/func/sub-*_task-*_bold.nii.gz`\n\n### Software Keywords\n- SPM: `spm`, `spm12`, `spm_preproc`, `matlabbatch`\n- FSL: `flirt`, `fnirt`, `feat`, `fslmaths`, `feat_model`\n- fMRIPrep: `fmriprep`, `bids`, `bold_std`\n- Analysis: `GLM`, `contrast`, `beta`, `design matrix`\n\n### BIDS Compliance\n- Must have: `sub-*/func/*_bold.nii.gz` and `*_bold.json`\n- Recommended: `sub-*/anat/*_T1w.nii.gz`\n- Check: file naming follows BIDS standard\n\n## Output Format\n\n```markdown\n# Preregistration: [Study Title]\n\n## Metadata\n[From METADATA_SCHEMA.md - all fields required]\n\n## Study Information\n- Research question: [extracted or TO BE COMPLETED]\n- Hypotheses: [extracted or TO BE COMPLETED]\n- Design: [extracted]\n\n## Participants\n- N: [extracted from sub-* directories or TO BE COMPLETED]\n- Inclusion/exclusion: [TO BE COMPLETED]\n- Compensation: [TO BE COMPLETED]\n\n## fMRI Acquisition\n- Scanner: [VERIFY: detected field strength]\n- Sequence: [extracted from JSON: T2*-weighted, BOLD]\n- TR: [VERIFY: extracted value]\n- TE: [VERIFY: extracted value]\n- Flip angle: [VERIFY: extracted value]\n- Voxel size: [extracted from NIfTI header]\n- Number of volumes: [extracted]\n- Multiband factor: [extracted if present]\n\n## Task Design\n- Task name: [TO BE COMPLETED]\n- Stimuli: [TO BE COMPLETED]\n- Trial duration: [TO BE COMPLETED]\n- Timing: [TO BE COMPLETED]\n\n## Preprocessing Pipeline\n- Software: [detected: SPM/FSL/fMRIPrep]\n- Realignment: [extracted parameters]\n- Normalization: [standard space detected]\n- Smoothing kernel: [extracted if present]\n\n## Statistical Analysis\n- GLM design: [extracted from scripts]\n- Contrasts: [extracted or TO BE COMPLETED]\n- Statistical test: [univariate GLM or TO BE COMPLETED]\n- Multiple comparisons: [extracted thresholds]\n- ROIs: [TO BE COMPLETED if applicable]\n\n## Ethics & Data Management\n[From ETHICS_PRIVACY_TEMPLATE.md]\n```\n\n## Behavior Rules\n\n1. **Always check BIDS structure** before other detection\n2. **Extract from JSON sidecars** for acquisition parameters\n3. **Mark confidence levels** for each detection\n4. **Never modify** BIDS data\n5. **Ask focused questions** - one section at a time\n6. **Provide examples** for user input fields\n7. **Save as** `PREREGISTRATION_DRAFT.md` in project root\n\n## Example Interaction\n\n```\nUser: Create a preregistration\n\nAgent:\n1. Scans directory\n2. Finds: sub-01, sub-02, ... BIDS structure\n3. ✓ Detects: fMRI (confidence: high)\n4. Reads BIDS JSON:\n   - TR: 2.0s, TE: 0.030s, FA: 90°\n   - Voxel size: 3×3×3 mm\n5. Scans scripts:\n   - Finds: SPM12 preprocessing\n   - Finds: 6mm Gaussian smoothing\n   - Finds: GLM with main effects\n6. Generates draft with:\n   - ✓ Acquisition parameters (from JSON)\n   - ~ Preprocessing: SPM12, 6mm smoothing\n   - ? Contrasts: [TO BE COMPLETED]\n7. Asks:\n   - \"Confirm preprocessing parameters?\"\n   - \"Define contrasts of interest\"\n   - \"What are your statistical thresholds?\"\n8. Saves: PREREGISTRATION_DRAFT.md\n```\n\n## Configuration\n\nLoad from `configs/fmri-config.json`:\n```json\n{\n  \"modality\": \"fmri\",\n  \"template\": \"templates/fmri/FMRI_PREREGISTRATION_GUIDE.md\",\n  \"search_patterns\": {\n    \"software\": [\"spm\", \"fsl\", \"fmriprep\"],\n    \"parameters\": [\"flirt\", \"fnirt\", \"spm_preproc\", \"feat\"],\n    \"keywords\": [\"BOLD\", \"TR\", \"TE\", \"GLM\", \"contrast\"]\n  },\n  \"required_sections\": [\n    \"Metadata\",\n    \"Study Information\",\n    \"Participants\",\n    \"fMRI Acquisition\",\n    \"Task Design\",\n    \"Preprocessing Pipeline\",\n    \"Statistical Analysis\",\n    \"Ethics\"\n  ]\n}\n```\n\n## Related Resources\n\n- Template: `templates/fmri/FMRI_PREREGISTRATION_GUIDE.md`\n- Common metadata: `templates/biopsych/common/METADATA_SCHEMA.md`\n- Ethics template: `templates/biopsych/common/ETHICS_PRIVACY_TEMPLATE.md`\n- BIDS specification: https://bids-standard.github.io/\n- References: See README.md \"fMRI Templates\" section\n\n## Key References\n\n1. Beyer et al. (2021). A fMRI pre-registration template. PsychArchives.\n2. OSF fMRI Preregistration Template\n3. Gau et al. (2020). Brain Imaging Data Structure (BIDS)\n"
+      }
+    },
+    {
+      "id": "online",
+      "label": "Online Behavioral",
+      "description": "Online behavioral preregistration skill with platform detection",
+      "template": "templates/online/ONLINE_BEHAVIORAL_PREREGISTRATION_GUIDE.md",
+      "templateTitle": "Online Behavioral Experiments Preregistration Template (PRP-QUANT Based)",
+      "skill": "skills/online/SKILL.md",
+      "requiredSections": [
+        "Metadata",
+        "Study Information",
+        "Participants",
+        "Experiment Design",
+        "Data Quality Procedures",
+        "Analysis Plan",
+        "Ethics & Data Management"
+      ],
+      "sections": [
+        {
+          "id": "metadata",
+          "title": "Metadata",
+          "required": true,
+          "intro": "Identification and administrative details. Required for every preregistration regardless of modality.",
+          "fields": [
+            {
+              "id": "title",
+              "label": "Study title",
+              "type": "text",
+              "required": true,
+              "placeholder": "Full title of the study"
+            },
+            {
+              "id": "short_title",
+              "label": "Short title",
+              "type": "text",
+              "required": false
+            },
+            {
+              "id": "study_id",
+              "label": "Study ID",
+              "type": "text",
+              "required": false,
+              "help": "Internal identifier, if one exists."
+            },
+            {
+              "id": "registration_platform",
+              "label": "Registration platform",
+              "type": "select",
+              "required": true,
+              "options": [
+                "OSF",
+                "AsPredicted",
+                "ClinicalTrials.gov",
+                "PsychArchives",
+                "Institutional repository",
+                "Not yet decided"
+              ]
+            },
+            {
+              "id": "registration_date",
+              "label": "Registration date",
+              "type": "date",
+              "required": false
+            },
+            {
+              "id": "pi_name",
+              "label": "Principal investigator",
+              "type": "text",
+              "required": true
+            },
+            {
+              "id": "pi_affiliation",
+              "label": "PI affiliation",
+              "type": "text",
+              "required": true
+            },
+            {
+              "id": "pi_orcid",
+              "label": "PI ORCID",
+              "type": "text",
+              "required": false,
+              "placeholder": "0000-0000-0000-0000"
+            },
+            {
+              "id": "corresponding_email",
+              "label": "Corresponding author email",
+              "type": "text",
+              "required": false
+            },
+            {
+              "id": "institutions",
+              "label": "Institution(s)",
+              "type": "list",
+              "required": false
+            },
+            {
+              "id": "funding",
+              "label": "Funding sources",
+              "type": "textarea",
+              "required": false,
+              "help": "Agency and grant number, or 'none'."
+            },
+            {
+              "id": "conflicts",
+              "label": "Conflicts of interest",
+              "type": "textarea",
+              "required": false
+            }
+          ]
+        },
+        {
+          "id": "study-information",
+          "title": "Study Information",
+          "required": true,
+          "intro": "The research question and the predictions being tested.",
+          "fields": [
+            {
+              "id": "research_question",
+              "label": "Research question(s)",
+              "type": "textarea",
+              "required": true
+            },
+            {
+              "id": "hypotheses",
+              "label": "Hypotheses",
+              "type": "textarea",
+              "required": true,
+              "help": "State each hypothesis and whether it is directional."
+            },
+            {
+              "id": "study_type",
+              "label": "Study type",
+              "type": "select",
+              "required": true,
+              "options": [
+                "Experimental",
+                "Observational",
+                "Correlational",
+                "Longitudinal",
+                "Cross-sectional",
+                "Other"
+              ]
+            },
+            {
+              "id": "research_domain",
+              "label": "Research domain",
+              "type": "select",
+              "required": false,
+              "options": [
+                "Cognitive neuroscience",
+                "Affective neuroscience",
+                "Clinical neuroscience",
+                "Social neuroscience",
+                "Developmental neuroscience",
+                "Other"
+              ]
+            },
+            {
+              "id": "prereg_type",
+              "label": "Preregistration type",
+              "type": "select",
+              "required": true,
+              "options": [
+                "Before data collection",
+                "Before data analysis (data already collected)",
+                "Registered Report (Stage 1)"
+              ]
+            },
+            {
+              "id": "design_summary",
+              "label": "Design summary",
+              "type": "textarea",
+              "required": false,
+              "help": "Factors, levels and how participants are allocated."
+            }
+          ]
+        },
+        {
+          "id": "participants",
+          "title": "Participants",
+          "required": true,
+          "intro": "Who takes part, how many, and when collection stops.",
+          "fields": [
+            {
+              "id": "target_n",
+              "label": "Target sample size",
+              "type": "number",
+              "required": true,
+              "min": 1,
+              "max": 1000000
+            },
+            {
+              "id": "power_analysis",
+              "label": "Power analysis / sample size justification",
+              "type": "textarea",
+              "required": true,
+              "help": "Software, assumed effect size, alpha and power."
+            },
+            {
+              "id": "inclusion",
+              "label": "Inclusion criteria",
+              "type": "textarea",
+              "required": true
+            },
+            {
+              "id": "exclusion",
+              "label": "Exclusion criteria",
+              "type": "textarea",
+              "required": true
+            },
+            {
+              "id": "recruitment",
+              "label": "Recruitment procedure",
+              "type": "textarea",
+              "required": false
+            },
+            {
+              "id": "compensation",
+              "label": "Compensation",
+              "type": "text",
+              "required": false
+            },
+            {
+              "id": "stopping_rule",
+              "label": "Stopping rule",
+              "type": "textarea",
+              "required": true,
+              "help": "The condition under which data collection ends."
+            }
+          ]
+        },
+        {
+          "id": "online-design",
+          "title": "Experiment Design",
+          "required": true,
+          "intro": "Platform, design and trial structure for online data collection.",
+          "fields": [
+            {
+              "id": "platform",
+              "label": "Platform / software",
+              "type": "select",
+              "required": true,
+              "options": [
+                "jsPsych",
+                "Qualtrics",
+                "Pavlovia",
+                "Gorilla",
+                "Custom",
+                "Other"
+              ]
+            },
+            {
+              "id": "design_type",
+              "label": "Design type",
+              "type": "select",
+              "required": true,
+              "options": [
+                "Between-subjects",
+                "Within-subjects",
+                "Mixed"
+              ]
+            },
+            {
+              "id": "ivs",
+              "label": "Independent variables",
+              "type": "textarea",
+              "required": true
+            },
+            {
+              "id": "dvs",
+              "label": "Dependent variables",
+              "type": "textarea",
+              "required": true
+            },
+            {
+              "id": "randomization",
+              "label": "Randomisation procedure",
+              "type": "textarea",
+              "required": false
+            },
+            {
+              "id": "counterbalancing",
+              "label": "Counterbalancing",
+              "type": "textarea",
+              "required": false
+            },
+            {
+              "id": "trials_per_condition",
+              "label": "Trials per condition",
+              "type": "number",
+              "required": false,
+              "min": 1,
+              "max": 10000
+            },
+            {
+              "id": "estimated_duration",
+              "label": "Estimated completion time",
+              "type": "text",
+              "required": false,
+              "placeholder": "25 min"
+            }
+          ]
+        },
+        {
+          "id": "online-quality",
+          "title": "Data Quality Procedures",
+          "required": true,
+          "intro": "Attention checks, timing bounds and bot detection.",
+          "fields": [
+            {
+              "id": "attention_checks",
+              "label": "Attention checks",
+              "type": "textarea",
+              "required": true
+            },
+            {
+              "id": "comprehension_checks",
+              "label": "Comprehension checks",
+              "type": "textarea",
+              "required": false
+            },
+            {
+              "id": "rt_bounds",
+              "label": "Response time bounds",
+              "type": "text",
+              "required": false,
+              "placeholder": "200-60000 ms"
+            },
+            {
+              "id": "bot_detection",
+              "label": "Bot detection methods",
+              "type": "multiselect",
+              "required": false,
+              "options": [
+                "Duplicate IP",
+                "Device fingerprint",
+                "Geolocation mismatch",
+                "Suspicious patterns",
+                "CAPTCHA"
+              ]
+            },
+            {
+              "id": "duplicate_prevention",
+              "label": "Duplicate participation prevention",
+              "type": "textarea",
+              "required": false
+            },
+            {
+              "id": "min_completion",
+              "label": "Minimum completion threshold",
+              "type": "text",
+              "required": false
+            }
+          ]
+        },
+        {
+          "id": "online-analysis",
+          "title": "Analysis Plan",
+          "required": true,
+          "intro": "Cleaning, exclusions, tests and inference criteria.",
+          "fields": [
+            {
+              "id": "preprocessing",
+              "label": "Data cleaning steps",
+              "type": "textarea",
+              "required": true
+            },
+            {
+              "id": "exclusions",
+              "label": "Exclusion criteria",
+              "type": "textarea",
+              "required": true
+            },
+            {
+              "id": "primary_tests",
+              "label": "Primary analyses",
+              "type": "textarea",
+              "required": true
+            },
+            {
+              "id": "secondary_tests",
+              "label": "Secondary analyses",
+              "type": "textarea",
+              "required": false
+            },
+            {
+              "id": "exploratory",
+              "label": "Exploratory analyses",
+              "type": "textarea",
+              "required": false
+            },
+            {
+              "id": "correction",
+              "label": "Multiple comparison correction",
+              "type": "text",
+              "required": true
+            },
+            {
+              "id": "effect_size",
+              "label": "Effect size measures",
+              "type": "text",
+              "required": false
+            },
+            {
+              "id": "alpha",
+              "label": "Alpha level",
+              "type": "text",
+              "required": true,
+              "placeholder": "0.05"
+            }
+          ]
+        },
+        {
+          "id": "ethics",
+          "title": "Ethics & Data Management",
+          "required": true,
+          "intro": "Approval status, consent, anonymisation and sharing. Applies to every modality.",
+          "fields": [
+            {
+              "id": "ethics_status",
+              "label": "Ethics approval status",
+              "type": "select",
+              "required": true,
+              "options": [
+                "Approved",
+                "Pending",
+                "Not yet submitted",
+                "Exempt"
+              ]
+            },
+            {
+              "id": "ethics_committee",
+              "label": "Ethics committee",
+              "type": "text",
+              "required": false
+            },
+            {
+              "id": "approval_number",
+              "label": "Approval number",
+              "type": "text",
+              "required": false
+            },
+            {
+              "id": "approval_date",
+              "label": "Approval date",
+              "type": "date",
+              "required": false
+            },
+            {
+              "id": "consent_procedure",
+              "label": "Consent procedure",
+              "type": "select",
+              "required": true,
+              "options": [
+                "Written consent",
+                "Electronic consent",
+                "Verbal consent (documented)"
+              ]
+            },
+            {
+              "id": "anonymization",
+              "label": "Anonymisation method",
+              "type": "select",
+              "required": true,
+              "options": [
+                "Direct identifiers removed",
+                "Pseudonymisation (coded)",
+                "Full anonymisation"
+              ]
+            },
+            {
+              "id": "data_sharing",
+              "label": "Data sharing level",
+              "type": "select",
+              "required": true,
+              "options": [
+                "Raw data",
+                "Preprocessed data",
+                "Summary statistics only",
+                "Statistical maps / results only",
+                "Not shared"
+              ]
+            },
+            {
+              "id": "repository",
+              "label": "Data repository",
+              "type": "text",
+              "required": false,
+              "placeholder": "OSF, OpenNeuro, PsychArchives..."
+            },
+            {
+              "id": "gdpr",
+              "label": "GDPR applies",
+              "type": "select",
+              "required": false,
+              "options": [
+                "Yes",
+                "No",
+                "N/A"
+              ]
+            },
+            {
+              "id": "retention",
+              "label": "Retention period",
+              "type": "text",
+              "required": false
+            }
+          ]
+        }
+      ],
+      "validationPatterns": {
+        "minimum_trials_per_condition": 10,
+        "maximum_study_duration": 3600,
+        "minimum_sample_size": 20
+      },
+      "filePatterns": [],
+      "software": [
+        "jspsych",
+        "qualtrics",
+        "pavlovia",
+        "custom"
+      ],
+      "library": {
+        "templateHeadings": [
+          {
+            "level": 2,
+            "text": "Overview"
+          },
+          {
+            "level": 2,
+            "text": "Purpose"
+          },
+          {
+            "level": 2,
+            "text": "Key Sections to Include"
+          },
+          {
+            "level": 3,
+            "text": "1. Title and Abstract"
+          },
+          {
+            "level": 3,
+            "text": "2. Introduction"
+          },
+          {
+            "level": 3,
+            "text": "3. Method"
+          },
+          {
+            "level": 3,
+            "text": "4. Online-Specific Considerations"
+          },
+          {
+            "level": 3,
+            "text": "5. Variables"
+          },
+          {
+            "level": 3,
+            "text": "6. Analysis Plan"
+          },
+          {
+            "level": 3,
+            "text": "7. Other"
+          },
+          {
+            "level": 3,
+            "text": "8. Deviations"
+          },
+          {
+            "level": 2,
+            "text": "Online Behavioral Experiment Addendum"
+          },
+          {
+            "level": 3,
+            "text": "Platform-Specific Issues"
+          },
+          {
+            "level": 3,
+            "text": "Recruitment Source Considerations"
+          },
+          {
+            "level": 3,
+            "text": "Remote Data Collection Challenges"
+          },
+          {
+            "level": 2,
+            "text": "References"
+          },
+          {
+            "level": 2,
+            "text": "Additional Resources"
+          },
+          {
+            "level": 2,
+            "text": "Notes"
+          }
+        ],
+        "templateMarkdown": "# Online Behavioral Experiments Preregistration Template (PRP-QUANT Based)\n\n## Overview\n\nThis template is designed for preregistering online behavioral experiments in psychology and biopsychology. It is based on the PRP-QUANT (Psychological Research Preregistration-Quantitative) Template, developed by a joint task force of the APA, BPS, and DGPs.\n\n## Purpose\n\nPreregistration of online behavioral studies helps:\n- Separate hypothesis-generating (exploratory) from hypothesis-testing (confirmatory) research\n- Increase transparency and credibility of findings\n- Document methodological decisions before data collection\n- Reduce HARKing (Hypothesizing After Results are Known)\n\n## Key Sections to Include\n\n### 1. Title and Abstract\n- Study title\n- Brief abstract (150 words) summarizing the study\n\n### 2. Introduction\n- Background and rationale\n- Research objectives\n- Research questions\n- Hypotheses (clearly state directional vs. non-directional)\n\n### 3. Method\n\n#### 3.1 Participants\n- Target sample size with justification\n- Power analysis details\n- Inclusion criteria\n- Exclusion criteria\n- Recruitment method and source\n- Compensation\n- Stopping rule for data collection\n\n#### 3.2 Online Platform Specifics\n- Platform/software used (e.g., Qualtrics, Pavlovia, jsPsych, Gorilla, MTurk)\n- Browser/device requirements\n- Attention checks and quality control measures\n- Bot detection methods\n- Duplicate participation prevention\n- Geographic restrictions (if any)\n- Data quality thresholds\n\n#### 3.3 Study Design\n- Design type (between-subjects, within-subjects, mixed)\n- Independent variables\n- Dependent variables\n- Randomization procedure\n- Counterbalancing\n- Blinding procedures\n\n#### 3.4 Materials\n- Stimuli description\n- Questionnaires/scales used (with citations)\n- Reliability and validity of measures\n- Pilot testing results (if applicable)\n\n#### 3.5 Procedure\n- Step-by-step description of participant experience\n- Timing of each component\n- Instructions provided to participants\n- Debriefing procedure\n\n### 4. Online-Specific Considerations\n\n#### 4.1 Technical Requirements\n- Minimum browser version\n- Screen size requirements\n- Audio/video requirements\n- Internet connection speed\n- Mobile vs. desktop restrictions\n\n#### 4.2 Data Quality Control\n- Attention check questions\n- Comprehension checks\n- Timing checks (too fast/too slow responses)\n- Straight-lining detection\n- Incomplete response handling\n- Failed attention check handling\n\n#### 4.3 Participant Engagement\n- Estimated completion time\n- Progress indicators\n- Break opportunities\n- Incentive structure\n\n### 5. Variables\n\n#### 5.1 Measured Variables\n- List all variables to be collected\n- Operationalization of each variable\n- Measurement scale/type\n- Coding scheme\n\n#### 5.2 Indices\n- Composite scores or indices\n- Calculation method for each index\n\n### 6. Analysis Plan\n\n#### 6.1 Data Preprocessing\n- Data cleaning steps\n- Outlier detection and handling\n- Missing data strategy\n- Transformation procedures (if any)\n\n#### 6.2 Exclusion Criteria\n- Participant-level exclusions\n  - Failed attention checks\n  - Incomplete responses\n  - Suspicious response patterns\n  - Technical issues\n- Minimum data quality requirements\n\n#### 6.3 Statistical Tests\n- Primary analyses\n  - Statistical test for each hypothesis\n  - Assumptions to be tested\n  - Planned contrasts\n- Secondary analyses\n- Exploratory analyses (clearly labeled)\n\n#### 6.4 Inference Criteria\n- Alpha level\n- Corrections for multiple comparisons\n- Effect size measures\n- Confidence intervals\n\n#### 6.5 Data Exclusion and Sensitivity\n- Robustness checks\n- Sensitivity analyses\n- Handling of assumption violations\n\n### 7. Other\n\n#### 7.1 Ethical Considerations\n- IRB/Ethics approval status\n- Informed consent procedure\n- Data privacy and anonymization\n- Participant withdrawal rights\n\n#### 7.2 Data Management\n- Data storage location\n- Data sharing plan\n- Open science practices (preregistration, open data, open materials)\n\n#### 7.3 Timeline\n- Expected start date\n- Expected completion date\n- Milestones\n\n### 8. Deviations\n- How deviations from this preregistration will be documented\n- Distinction between confirmatory and exploratory findings in final report\n\n## Online Behavioral Experiment Addendum\n\n### Platform-Specific Issues\n- Cross-browser compatibility testing\n- Mobile responsiveness\n- Timing accuracy considerations\n- Stimulus presentation precision\n\n### Recruitment Source Considerations\n- Crowdsourcing platform characteristics (e.g., MTurk, Prolific)\n- Demographic representativeness\n- Previous participation in similar studies\n- Platform-specific quality indicators (e.g., approval rate)\n\n### Remote Data Collection Challenges\n- Lack of experimental control\n- Environmental variability\n- Participant multitasking\n- Technical difficulties\n- Mitigation strategies for each\n\n## References\n\nThis template is based on:\n- Preregistration Task Force. (2020). Psychological Research Preregistration-Quantitative (PRP-QUANT) Template. PsychArchives. https://doi.org/10.23668/psycharchives.4584\n- Bosnjak, M., Fiebach, C. J., Mellor, D., et al. (2022). A template for preregistration of quantitative research in psychology: Report of the joint psychological societies preregistration task force. American Psychologist, 77(4), 602-615.\n- OSF Preregistration resources: https://www.cos.io/initiatives/prereg\n- PreReg (ZPID) templates: https://prereg-psych.org/\n\n## Additional Resources\n\n- AsPredicted.org for simple preregistrations\n- OSF Registries: https://osf.io/registries\n- PRP-QUANT online form: https://forms.gle/9YgAoJn4ZYPXtHGk9\n- PRP-QUANT webinar: http://bit.ly/PreRegWebinar\n\n## Notes\n\n- Fill out as much as possible, but acknowledge uncertainty where it exists\n- \"Not yet decided\" is an acceptable answer - document your decision-making process\n- Update and document any deviations from the preregistration\n- Consider using version control for your preregistration\n- This template is comprehensive - adapt sections as needed for your specific study\n",
+        "skillMarkdown": "# Online Behavioral Preregistration Skill\n\n## Description\n\nAnalyzes online behavioral research projects and generates comprehensive preregistration documents. Detects experiment platform, data quality procedures, and exclusion criteria from experiment code and documentation.\n\n## Objective\n\nGenerate modality-appropriate online behavioral preregistration by:\n1. Confirming online behavioral modality\n2. Detecting platform (jsPsych, Qualtrics, Pavlovia, custom)\n3. Extracting participant criteria and data quality thresholds\n4. Identifying exclusion rules and attention checks\n5. Creating preregistration draft using PRP-QUANT template\n6. Guiding user through missing sections\n\n## Workflow\n\n### Step 1: Confirm Modality\nVerify online behavioral detection:\n- Display files found: .html, .js, .json files\n- Identify platform patterns\n- Confirm with user: \"I detected online behavioral experiment files. Proceed?\"\n\n### Step 2: Detect Platform\n\nSearch for platform indicators:\n```\njsPsych detected: grep for \"jsPsych\", \"jspsych.init\", \".js files with experiment logic\"\nQualtrics detected: grep for \"Qualtrics\" API, QID references\nPavlovia detected: grep for \"psychojs\", \"pavlovia\"\nProlific detected: grep for \"PROLIFIC_PID\", \"STUDY_ID\"\nMTurk detected: grep for \"turkSubmitTo\", \"HITId\"\nCustom detected: experiment logic without standard framework\n```\n\n### Step 3: Extract Experiment Parameters\n\n**From jsPsych code (.js, .html):**\n```javascript\n// Timeline extraction\nvar trial = {\n  type: 'image-button-response',\n  stimulus: [images],\n  choices: [options],\n  trial_duration: [ms]\n};\n\n// Detect:\n- Trial types\n- Number of trials per condition\n- Stimulus properties\n- Response options\n- Trial timing\n```\n\n**From Qualtrics survey structure:**\n- Question types and branching\n- Block structure\n- Skip logic\n- Timing settings\n\n**From experiment documentation:**\n- README: study description, hypothesis\n- protocols.txt: procedure steps\n- criteria.json: participant inclusion/exclusion\n\n**From data quality configuration:**\n- Response time thresholds\n- Attention check locations and passing criteria\n- Bot detection rules\n- Duplicate detection methods\n\n### Step 4: Extract Exclusion Criteria\n\n**Data quality thresholds (from config or scripts):**\n- Attention check accuracy (e.g., ≥80%)\n- Response time bounds (e.g., 200-5000ms)\n- Missing response rate (e.g., <5%)\n- DVARS/head motion (if applicable)\n- Duplicate detection: same IP, device fingerprint\n\n**Participant criteria (from documentation):**\n- Age range\n- Language requirements\n- Location restrictions\n- Device requirements (desktop/mobile)\n- Browser requirements\n\n### Step 5: Detect Data Collection Method\n\nIdentify recruitment platform:\n```\nProlific: \"PROLIFIC_PID\" in code\nMTurk: \"HITId\", \"turkSubmitTo\"\nDirect links: custom URL distribution\nPavlovia: Pavlovia URL structure\nLab-based online: .localhost, internal URL\n```\n\nTrack: expected N, compensation, inclusion code handling\n\n### Step 6: Generate Draft\n\nCreate `PREREGISTRATION_DRAFT.md` with:\n- **Metadata** (from METADATA_SCHEMA.md)\n- **Study Information** (title, hypotheses, design)\n- **Participants** (N, criteria, recruitment)\n- **Experiment Design** (task description, stimuli)\n- **Data Quality** (exclusion criteria, attention checks)\n- **Analysis Plan** (planned tests, cleaning procedures)\n- **Ethics** (from ETHICS_PRIVACY_TEMPLATE.md)\n\n### Step 7: Interactive Completion\n\nGuide user through sections:\n1. Verify platform and experiment structure\n2. Confirm participant criteria and N\n3. Detail data quality procedures\n4. Specify exclusion rules\n5. Define attention checks\n6. Complete analysis plan\n\n## Detection Patterns\n\n### File Extensions & Formats\n- `.html` - Web-based experiment\n- `.js` - JavaScript experiment code\n- `.json` - Configuration files, data structure\n- `.py` - Backend code (Flask, Django)\n- `.php` - Server-side code\n\n### Platform Keywords\n- jsPsych: `jspsych.min.js`, `jsPsych.init`, `.on_finish`\n- Qualtrics: `Qualtrics.SurveyEngine`, QID\n- Pavlovia: `psychojs`, `PavloviaManager`\n- Prolific: `PROLIFIC_PID`, `STUDY_ID`\n- MTurk: `turkSubmitTo`, `HITId`, `assignmentId`\n\n### Experiment Keywords\n- `stimulus`, `trial`, `condition`, `block`\n- `rt`, `reaction_time`, `response_time`\n- `choice`, `response`, `accuracy`\n- `attention_check`, `quality_check`, `bot_detection`\n\n## Output Format\n\n```markdown\n# Preregistration: [Study Title]\n\n## Metadata\n[From METADATA_SCHEMA.md - all fields required]\n\n## Study Information\n- Research question: [extracted or TO BE COMPLETED]\n- Hypotheses: [extracted or TO BE COMPLETED]\n- Design: [extracted from code]\n\n## Participants\n- Planned N: [extracted estimate or TO BE COMPLETED]\n- Inclusion criteria: [extracted or TO BE COMPLETED]\n- Exclusion criteria: [detected data quality rules]\n- Recruitment platform: [detected: Prolific/MTurk/other]\n- Compensation: [TO BE COMPLETED]\n\n## Experiment Design\n- Platform: [detected: jsPsych/Qualtrics/Pavlovia]\n- Task description: [extracted from code/README]\n- Stimuli: [extracted or TO BE COMPLETED]\n- Trial structure: [extracted or TO BE COMPLETED]\n- Number of trials: [extracted or TO BE COMPLETED]\n- Estimated duration: [extracted or TO BE COMPLETED]\n\n## Data Quality Procedures\n- Attention checks: [detected number and location]\n- Passing criteria: [detected thresholds]\n- Response time bounds: [detected if set]\n- Bot detection: [TO BE COMPLETED]\n- Duplicate detection: [detected methods]\n- Other exclusions: [detected rules]\n\n## Analysis Plan\n- Data cleaning: [extracted procedures]\n- Exclusion rules: [detected thresholds]\n- Primary analyses: [TO BE COMPLETED]\n- Secondary analyses: [TO BE COMPLETED]\n\n## Ethics & Data Management\n[From ETHICS_PRIVACY_TEMPLATE.md]\n```\n\n## Behavior Rules\n\n1. **Always scan experiment code** before asking about design\n2. **Extract data quality settings** from configuration\n3. **Identify recruitment platform** from URLs and tokens\n4. **Mark confidence levels** for each detection\n5. **Never modify** experiment code without permission\n6. **Ask focused questions** - one section at a time\n7. **Provide examples** for user input fields\n8. **Save as** `PREREGISTRATION_DRAFT.md` in project root\n\n## Example Interaction\n\n```\nUser: Create a preregistration\n\nAgent:\n1. Scans directory\n2. Finds: index.html, experiment.js, config.json\n3. ✓ Detects: Online behavioral (confidence: high)\n4. Analyzes code:\n   - Platform: jsPsych (detected \"jsPsych.init\")\n   - Conditions: 3 found in experiment code\n   - Trials per condition: 40 (extracted)\n   - Attention check: 1 found (location: trial 50)\n5. Reads config.json:\n   - Response time bounds: 200-5000ms\n   - Attention accuracy threshold: ≥80%\n   - Recruitment: Prolific (detected PROLIFIC_PID)\n6. Generates draft with:\n   - ✓ Platform: jsPsych\n   - ✓ Trials: 40 per condition\n   - ✓ Data quality: attention check, RT bounds\n   - ? Hypotheses: [TO BE COMPLETED]\n   - ? Primary analysis: [TO BE COMPLETED]\n7. Asks:\n   - \"Confirm trial structure?\"\n   - \"What are your primary hypotheses?\"\n   - \"Define primary statistical tests\"\n8. Saves: PREREGISTRATION_DRAFT.md\n```\n\n## Configuration\n\nLoad from `configs/online-config.json`:\n```json\n{\n  \"modality\": \"online\",\n  \"template\": \"templates/online/ONLINE_BEHAVIORAL_PREREGISTRATION_GUIDE.md\",\n  \"platforms\": [\"jspsych\", \"qualtrics\", \"pavlovia\", \"custom\"],\n  \"search_patterns\": {\n    \"jspsych\": [\"jspsych.min.js\", \"jsPsych.init\", \".on_finish\"],\n    \"qualtrics\": [\"Qualtrics.SurveyEngine\", \"QID\"],\n    \"recruitment\": [\"PROLIFIC_PID\", \"HITId\", \"turkSubmitTo\"]\n  },\n  \"required_sections\": [\n    \"Metadata\",\n    \"Study Information\",\n    \"Participants\",\n    \"Experiment Design\",\n    \"Data Quality Procedures\",\n    \"Analysis Plan\",\n    \"Ethics\"\n  ]\n}\n```\n\n## Related Resources\n\n- Template: `templates/online/ONLINE_BEHAVIORAL_PREREGISTRATION_GUIDE.md`\n- Common metadata: `templates/biopsych/common/METADATA_SCHEMA.md`\n- Ethics template: `templates/biopsych/common/ETHICS_PRIVACY_TEMPLATE.md`\n- jsPsych documentation: https://www.jspsych.org/\n- References: See README.md \"Online Behavioral Templates\" section\n\n## Key References\n\n1. PRP-QUANT Template (2020). Preregistration Standards for Psychology.\n2. Joint Psychological Societies Preregistration Task Force Report (2022).\n3. Bosnjak et al. (2022). Template for preregistration of quantitative research in psychology. American Psychologist.\n"
+      }
+    },
+    {
+      "id": "psychophys",
+      "label": "Psychophysiology",
+      "description": "Psychophysiology preregistration skill with automated parameter extraction for ECG, HRV, EDA, EMG, and other peripheral measures",
+      "template": "templates/psychophys/PSYCHOPHYSIOLOGY_PREREGISTRATION_GUIDE.md",
+      "templateTitle": "Psychophysiology Preregistration Template (ECG, HRV, EDA, EMG)",
+      "skill": "skills/psychophys/SKILL.md",
+      "requiredSections": [
+        "Metadata",
+        "Study Information",
+        "Participants",
+        "Psychophysiological Measures",
+        "Experimental Paradigm",
+        "Signal Processing",
+        "Analysis Plan",
+        "Ethics & Data Management"
+      ],
+      "sections": [
+        {
+          "id": "metadata",
+          "title": "Metadata",
+          "required": true,
+          "intro": "Identification and administrative details. Required for every preregistration regardless of modality.",
+          "fields": [
+            {
+              "id": "title",
+              "label": "Study title",
+              "type": "text",
+              "required": true,
+              "placeholder": "Full title of the study"
+            },
+            {
+              "id": "short_title",
+              "label": "Short title",
+              "type": "text",
+              "required": false
+            },
+            {
+              "id": "study_id",
+              "label": "Study ID",
+              "type": "text",
+              "required": false,
+              "help": "Internal identifier, if one exists."
+            },
+            {
+              "id": "registration_platform",
+              "label": "Registration platform",
+              "type": "select",
+              "required": true,
+              "options": [
+                "OSF",
+                "AsPredicted",
+                "ClinicalTrials.gov",
+                "PsychArchives",
+                "Institutional repository",
+                "Not yet decided"
+              ]
+            },
+            {
+              "id": "registration_date",
+              "label": "Registration date",
+              "type": "date",
+              "required": false
+            },
+            {
+              "id": "pi_name",
+              "label": "Principal investigator",
+              "type": "text",
+              "required": true
+            },
+            {
+              "id": "pi_affiliation",
+              "label": "PI affiliation",
+              "type": "text",
+              "required": true
+            },
+            {
+              "id": "pi_orcid",
+              "label": "PI ORCID",
+              "type": "text",
+              "required": false,
+              "placeholder": "0000-0000-0000-0000"
+            },
+            {
+              "id": "corresponding_email",
+              "label": "Corresponding author email",
+              "type": "text",
+              "required": false
+            },
+            {
+              "id": "institutions",
+              "label": "Institution(s)",
+              "type": "list",
+              "required": false
+            },
+            {
+              "id": "funding",
+              "label": "Funding sources",
+              "type": "textarea",
+              "required": false,
+              "help": "Agency and grant number, or 'none'."
+            },
+            {
+              "id": "conflicts",
+              "label": "Conflicts of interest",
+              "type": "textarea",
+              "required": false
+            }
+          ]
+        },
+        {
+          "id": "study-information",
+          "title": "Study Information",
+          "required": true,
+          "intro": "The research question and the predictions being tested.",
+          "fields": [
+            {
+              "id": "research_question",
+              "label": "Research question(s)",
+              "type": "textarea",
+              "required": true
+            },
+            {
+              "id": "hypotheses",
+              "label": "Hypotheses",
+              "type": "textarea",
+              "required": true,
+              "help": "State each hypothesis and whether it is directional."
+            },
+            {
+              "id": "study_type",
+              "label": "Study type",
+              "type": "select",
+              "required": true,
+              "options": [
+                "Experimental",
+                "Observational",
+                "Correlational",
+                "Longitudinal",
+                "Cross-sectional",
+                "Other"
+              ]
+            },
+            {
+              "id": "research_domain",
+              "label": "Research domain",
+              "type": "select",
+              "required": false,
+              "options": [
+                "Cognitive neuroscience",
+                "Affective neuroscience",
+                "Clinical neuroscience",
+                "Social neuroscience",
+                "Developmental neuroscience",
+                "Other"
+              ]
+            },
+            {
+              "id": "prereg_type",
+              "label": "Preregistration type",
+              "type": "select",
+              "required": true,
+              "options": [
+                "Before data collection",
+                "Before data analysis (data already collected)",
+                "Registered Report (Stage 1)"
+              ]
+            },
+            {
+              "id": "design_summary",
+              "label": "Design summary",
+              "type": "textarea",
+              "required": false,
+              "help": "Factors, levels and how participants are allocated."
+            }
+          ]
+        },
+        {
+          "id": "participants",
+          "title": "Participants",
+          "required": true,
+          "intro": "Who takes part, how many, and when collection stops.",
+          "fields": [
+            {
+              "id": "target_n",
+              "label": "Target sample size",
+              "type": "number",
+              "required": true,
+              "min": 1,
+              "max": 1000000
+            },
+            {
+              "id": "power_analysis",
+              "label": "Power analysis / sample size justification",
+              "type": "textarea",
+              "required": true,
+              "help": "Software, assumed effect size, alpha and power."
+            },
+            {
+              "id": "inclusion",
+              "label": "Inclusion criteria",
+              "type": "textarea",
+              "required": true
+            },
+            {
+              "id": "exclusion",
+              "label": "Exclusion criteria",
+              "type": "textarea",
+              "required": true
+            },
+            {
+              "id": "recruitment",
+              "label": "Recruitment procedure",
+              "type": "textarea",
+              "required": false
+            },
+            {
+              "id": "compensation",
+              "label": "Compensation",
+              "type": "text",
+              "required": false
+            },
+            {
+              "id": "stopping_rule",
+              "label": "Stopping rule",
+              "type": "textarea",
+              "required": true,
+              "help": "The condition under which data collection ends."
+            }
+          ]
+        },
+        {
+          "id": "psychophys-measures",
+          "title": "Psychophysiological Measures",
+          "required": true,
+          "intro": "Which signals are recorded and how they are acquired.",
+          "fields": [
+            {
+              "id": "signals",
+              "label": "Signals recorded",
+              "type": "multiselect",
+              "required": true,
+              "options": [
+                "ECG / HRV",
+                "EDA / skin conductance",
+                "EMG",
+                "Respiration",
+                "Pupillometry"
+              ]
+            },
+            {
+              "id": "acquisition_system",
+              "label": "Acquisition system and manufacturer",
+              "type": "text",
+              "required": true
+            },
+            {
+              "id": "electrode_placement",
+              "label": "Electrode placement",
+              "type": "textarea",
+              "required": true
+            },
+            {
+              "id": "sampling_rate",
+              "label": "Sampling rate",
+              "type": "number",
+              "unit": "Hz",
+              "required": true,
+              "min": 10,
+              "max": 5000
+            },
+            {
+              "id": "online_filters",
+              "label": "Online filters",
+              "type": "text",
+              "required": false
+            }
+          ]
+        },
+        {
+          "id": "psychophys-paradigm",
+          "title": "Experimental Paradigm",
+          "required": true,
+          "intro": "Task, timing and the windows used for extraction.",
+          "fields": [
+            {
+              "id": "task",
+              "label": "Task description",
+              "type": "textarea",
+              "required": true
+            },
+            {
+              "id": "stimuli",
+              "label": "Stimuli",
+              "type": "textarea",
+              "required": true
+            },
+            {
+              "id": "trials_per_condition",
+              "label": "Trials per condition",
+              "type": "number",
+              "required": true,
+              "min": 1,
+              "max": 10000
+            },
+            {
+              "id": "baseline_window",
+              "label": "Baseline window",
+              "type": "text",
+              "required": true,
+              "placeholder": "-2000 to 0 ms"
+            },
+            {
+              "id": "analysis_window",
+              "label": "Analysis window",
+              "type": "text",
+              "required": true,
+              "placeholder": "1000 to 6000 ms post-stimulus"
+            },
+            {
+              "id": "instructions",
+              "label": "Instructions to participants",
+              "type": "textarea",
+              "required": false
+            }
+          ]
+        },
+        {
+          "id": "psychophys-processing",
+          "title": "Signal Processing",
+          "required": true,
+          "intro": "Peak detection, artefact correction and decomposition.",
+          "fields": [
+            {
+              "id": "rpeak_algorithm",
+              "label": "R-peak detection algorithm",
+              "type": "text",
+              "required": false,
+              "placeholder": "Pan-Tompkins, NeuroKit2"
+            },
+            {
+              "id": "artifact_correction",
+              "label": "Artefact detection and correction",
+              "type": "textarea",
+              "required": true
+            },
+            {
+              "id": "ectopic_handling",
+              "label": "Ectopic beat handling",
+              "type": "text",
+              "required": false
+            },
+            {
+              "id": "eda_decomposition",
+              "label": "EDA decomposition method",
+              "type": "text",
+              "required": false,
+              "placeholder": "cvxEDA, Ledalab CDA"
+            },
+            {
+              "id": "scr_threshold",
+              "label": "SCR detection threshold",
+              "type": "text",
+              "required": false,
+              "placeholder": "0.01-0.05 uS"
+            },
+            {
+              "id": "emg_rectification",
+              "label": "EMG rectification",
+              "type": "text",
+              "required": false
+            },
+            {
+              "id": "emg_smoothing",
+              "label": "EMG smoothing / envelope",
+              "type": "text",
+              "required": false
+            },
+            {
+              "id": "software",
+              "label": "Analysis software and version",
+              "type": "text",
+              "required": true
+            }
+          ]
+        },
+        {
+          "id": "psychophys-analysis",
+          "title": "Analysis Plan",
+          "required": true,
+          "intro": "Derived measures and the statistical model.",
+          "fields": [
+            {
+              "id": "hrv_time",
+              "label": "HRV time-domain measures",
+              "type": "multiselect",
+              "required": false,
+              "options": [
+                "SDNN",
+                "RMSSD",
+                "pNN50",
+                "SDSD",
+                "NN50"
+              ]
+            },
+            {
+              "id": "hrv_freq",
+              "label": "HRV frequency-domain measures",
+              "type": "multiselect",
+              "required": false,
+              "options": [
+                "LF power",
+                "HF power",
+                "LF/HF ratio",
+                "Total power",
+                "VLF power"
+              ]
+            },
+            {
+              "id": "eda_measures",
+              "label": "EDA measures",
+              "type": "multiselect",
+              "required": false,
+              "options": [
+                "SCL",
+                "SCR amplitude",
+                "SCR frequency",
+                "SCR latency",
+                "SCR rise time",
+                "AUC"
+              ]
+            },
+            {
+              "id": "statistical_test",
+              "label": "Statistical test",
+              "type": "text",
+              "required": true
+            },
+            {
+              "id": "correction",
+              "label": "Multiple comparison correction",
+              "type": "text",
+              "required": true
+            },
+            {
+              "id": "alpha",
+              "label": "Alpha level",
+              "type": "text",
+              "required": true,
+              "placeholder": "0.05"
+            }
+          ]
+        },
+        {
+          "id": "ethics",
+          "title": "Ethics & Data Management",
+          "required": true,
+          "intro": "Approval status, consent, anonymisation and sharing. Applies to every modality.",
+          "fields": [
+            {
+              "id": "ethics_status",
+              "label": "Ethics approval status",
+              "type": "select",
+              "required": true,
+              "options": [
+                "Approved",
+                "Pending",
+                "Not yet submitted",
+                "Exempt"
+              ]
+            },
+            {
+              "id": "ethics_committee",
+              "label": "Ethics committee",
+              "type": "text",
+              "required": false
+            },
+            {
+              "id": "approval_number",
+              "label": "Approval number",
+              "type": "text",
+              "required": false
+            },
+            {
+              "id": "approval_date",
+              "label": "Approval date",
+              "type": "date",
+              "required": false
+            },
+            {
+              "id": "consent_procedure",
+              "label": "Consent procedure",
+              "type": "select",
+              "required": true,
+              "options": [
+                "Written consent",
+                "Electronic consent",
+                "Verbal consent (documented)"
+              ]
+            },
+            {
+              "id": "anonymization",
+              "label": "Anonymisation method",
+              "type": "select",
+              "required": true,
+              "options": [
+                "Direct identifiers removed",
+                "Pseudonymisation (coded)",
+                "Full anonymisation"
+              ]
+            },
+            {
+              "id": "data_sharing",
+              "label": "Data sharing level",
+              "type": "select",
+              "required": true,
+              "options": [
+                "Raw data",
+                "Preprocessed data",
+                "Summary statistics only",
+                "Statistical maps / results only",
+                "Not shared"
+              ]
+            },
+            {
+              "id": "repository",
+              "label": "Data repository",
+              "type": "text",
+              "required": false,
+              "placeholder": "OSF, OpenNeuro, PsychArchives..."
+            },
+            {
+              "id": "gdpr",
+              "label": "GDPR applies",
+              "type": "select",
+              "required": false,
+              "options": [
+                "Yes",
+                "No",
+                "N/A"
+              ]
+            },
+            {
+              "id": "retention",
+              "label": "Retention period",
+              "type": "text",
+              "required": false
+            }
+          ]
+        }
+      ],
+      "validationPatterns": {
+        "ecg_sampling_rate_range": [
+          250,
+          2000
+        ],
+        "eda_sampling_rate_range": [
+          10,
+          1000
+        ],
+        "emg_sampling_rate_range": [
+          500,
+          5000
+        ],
+        "hrv_window_minimum": 60000,
+        "scr_amplitude_range": [
+          0.01,
+          10
+        ]
+      },
+      "filePatterns": [
+        ".acq",
+        ".edf",
+        ".mat",
+        ".txt",
+        ".csv",
+        ".hea",
+        ".dat",
+        ".ibi",
+        ".rr"
+      ],
+      "software": [
+        "acqknowledge",
+        "kubios",
+        "ledalab",
+        "neurokit2",
+        "biosppy",
+        "rhrv",
+        "matlab_custom"
+      ],
+      "library": {
+        "templateHeadings": [
+          {
+            "level": 2,
+            "text": "Overview"
+          },
+          {
+            "level": 2,
+            "text": "Purpose"
+          },
+          {
+            "level": 2,
+            "text": "Key Sections to Include"
+          },
+          {
+            "level": 3,
+            "text": "1. Study Information"
+          },
+          {
+            "level": 3,
+            "text": "2. Participants"
+          },
+          {
+            "level": 3,
+            "text": "3. Psychophysiological Measures"
+          },
+          {
+            "level": 3,
+            "text": "4. Experimental Paradigm"
+          },
+          {
+            "level": 3,
+            "text": "5. Data Quality Control"
+          },
+          {
+            "level": 3,
+            "text": "6. Statistical Analysis"
+          },
+          {
+            "level": 3,
+            "text": "7. Multimodal Integration (if applicable)"
+          },
+          {
+            "level": 3,
+            "text": "8. Software and Tools"
+          },
+          {
+            "level": 3,
+            "text": "9. Data Sharing"
+          },
+          {
+            "level": 3,
+            "text": "10. Deviations"
+          },
+          {
+            "level": 2,
+            "text": "Special Considerations for Remote/Wearable Psychophysiology"
+          },
+          {
+            "level": 3,
+            "text": "Device Specifications"
+          },
+          {
+            "level": 3,
+            "text": "Participant Setup"
+          },
+          {
+            "level": 3,
+            "text": "Data Quality in Naturalistic Settings"
+          },
+          {
+            "level": 3,
+            "text": "Signal Quality Thresholds"
+          },
+          {
+            "level": 2,
+            "text": "References"
+          },
+          {
+            "level": 2,
+            "text": "Additional Resources"
+          },
+          {
+            "level": 2,
+            "text": "Notes"
+          }
+        ],
+        "templateMarkdown": "# Psychophysiology Preregistration Template (ECG, HRV, EDA, EMG)\n\n## Overview\n\nThis template provides guidance for preregistering psychophysiology studies involving peripheral physiological measures such as electrocardiography (ECG), heart rate variability (HRV), electrodermal activity (EDA/skin conductance), electromyography (EMG), respiration, and pupillometry.\n\n## Purpose\n\nPreregistration of psychophysiology studies helps:\n- Document complex signal processing and analysis decisions\n- Distinguish confirmatory from exploratory analyses\n- Increase transparency in psychophysiological research\n- Reduce flexibility in data analysis\n\n## Key Sections to Include\n\n### 1. Study Information\n- Title\n- Authors and affiliations\n- Research question(s)\n- Hypotheses (with directionality)\n- Study design\n\n### 2. Participants\n- Target sample size with justification\n- Power analysis\n- Inclusion criteria\n- Exclusion criteria (general and physiology-specific)\n  - Cardiovascular conditions (for ECG/HRV)\n  - Skin conditions (for EDA)\n  - Medications affecting autonomic function\n  - Arrhythmias\n  - Other relevant conditions\n- Recruitment strategy\n- Compensation\n\n### 3. Psychophysiological Measures\n\n#### 3.1 Electrocardiography (ECG) / Heart Rate (HR) / Heart Rate Variability (HRV)\n\n**Acquisition**\n- ECG system and manufacturer\n- Lead configuration (e.g., Lead II, 3-lead, 12-lead)\n- Electrode type and placement\n- Sampling rate (minimum 250 Hz recommended for HRV)\n- Online filters\n- Impedance checking\n\n**Processing**\n- R-peak detection algorithm\n- Manual inspection/correction of R-peaks\n- Artifact detection and correction\n- Ectopic beat handling\n- Interpolation method for missing beats\n\n**HRV Analysis**\n- Time domain measures:\n  - SDNN (standard deviation of NN intervals)\n  - RMSSD (root mean square of successive differences)\n  - pNN50 (percentage of successive NN intervals > 50ms)\n  - Other measures\n- Frequency domain measures:\n  - LF (low frequency) power and band (typically 0.04-0.15 Hz)\n  - HF (high frequency) power and band (typically 0.15-0.4 Hz)\n  - LF/HF ratio\n  - Total power\n  - FFT vs. autoregressive method\n- Nonlinear measures (if applicable):\n  - Poincaré plot indices (SD1, SD2)\n  - Sample entropy\n  - Detrended fluctuation analysis\n- Analysis window length\n- Stationarity requirements\n\n#### 3.2 Electrodermal Activity (EDA) / Skin Conductance\n\n**Acquisition**\n- EDA system and manufacturer\n- Electrode placement (e.g., palmar, plantar, medial phalanges)\n- Electrode type (Ag/AgCl recommended)\n- Gel type (isotonic recommended)\n- Sampling rate (minimum 10 Hz recommended)\n- Measurement mode (DC for tonic, AC for phasic, or both)\n\n**Processing**\n- Artifact detection and removal\n- Decomposition method (if separating tonic and phasic):\n  - High-pass filtering\n  - Continuous decomposition analysis (CDA)\n  - Other method\n- Baseline correction\n\n**EDA Analysis**\n- Tonic measures:\n  - Skin Conductance Level (SCL)\n  - Baseline period definition\n  - Averaging method\n- Phasic measures:\n  - Skin Conductance Response (SCR)\n  - SCR detection criteria:\n    - Minimum amplitude threshold (e.g., 0.01-0.05 μS)\n    - Latency window (typically 1-4 seconds post-stimulus)\n    - Rise time criteria\n    - Recovery criteria\n  - Specific SCR (SSCR) vs. Non-specific SCR (NSSCR)\n  - SCR amplitude, latency, rise time, recovery time\n  - Frequency of SCRs\n- Analysis software and version\n\n#### 3.3 Electromyography (EMG)\n\n**Acquisition**\n- EMG system and manufacturer\n- Muscle(s) recorded (e.g., corrugator supercilii, zygomaticus major, masseter)\n- Electrode type and placement\n- Inter-electrode distance\n- Sampling rate (minimum 1000 Hz recommended)\n- Online filters\n\n**Processing**\n- Artifact detection and removal\n- Rectification (full-wave)\n- Smoothing/integration method\n- Baseline correction\n\n**EMG Analysis**\n- Baseline period definition\n- Response window\n- Peak amplitude vs. integrated EMG\n- Latency measures\n- Startle response analysis (if applicable)\n\n#### 3.4 Respiration\n\n**Acquisition**\n- Respiration measurement method:\n  - Respiratory belt/strain gauge\n  - Nasal thermistor\n  - Capnography\n  - Other\n- Sampling rate\n- Calibration procedure\n\n**Processing**\n- Breath detection algorithm\n- Artifact detection and removal\n\n**Respiration Analysis**\n- Respiratory rate\n- Tidal volume (if calibrated)\n- Respiratory sinus arrhythmia (RSA)\n- Breath-by-breath analysis vs. averaged\n\n#### 3.5 Pupillometry / Eye Tracking\n\n**Acquisition**\n- Eye tracker manufacturer and model\n- Sampling rate\n- Monocular vs. binocular recording\n- Calibration procedure\n- Lighting conditions\n\n**Processing**\n- Blink detection and interpolation\n- Artifact removal\n- Baseline correction\n\n**Pupillometry Analysis**\n- Baseline pupil diameter\n- Task-evoked pupillary response (TEPR)\n- Peak dilation\n- Latency to peak\n- Sustained dilation\n\n### 4. Experimental Paradigm\n\n#### 4.1 Task Description\n- Detailed description of experimental task\n- Conditions and contrasts\n- Trial structure and timing\n- Stimulus presentation\n- Number of trials per condition\n- Breaks and session duration\n\n#### 4.2 Baseline Recording\n- Baseline duration\n- Baseline instructions (e.g., eyes open/closed, resting)\n- Baseline timing (before task, between blocks, etc.)\n\n#### 4.3 Environmental Control\n- Room temperature\n- Lighting\n- Noise level\n- Time of day restrictions\n- Participant preparation:\n  - Caffeine restrictions\n  - Alcohol restrictions\n  - Exercise restrictions\n  - Medication restrictions\n  - Sleep requirements\n\n### 5. Data Quality Control\n\n#### 5.1 Signal Quality Criteria\n- Minimum signal-to-noise ratio\n- Maximum artifact percentage\n- Visual inspection procedures\n- Automated quality checks\n\n#### 5.2 Exclusion Criteria\n- Participant-level exclusions:\n  - Poor signal quality\n  - Excessive artifacts\n  - Equipment malfunction\n  - Non-compliance with restrictions\n- Trial-level exclusions:\n  - Artifact contamination\n  - Movement artifacts\n  - Missing data\n- Minimum data requirements per participant\n\n### 6. Statistical Analysis\n\n#### 6.1 Dependent Variables\n- Primary physiological outcome measures\n- Secondary outcome measures\n- Derived indices\n\n#### 6.2 Independent Variables\n- Experimental manipulations\n- Between-subject factors\n- Within-subject factors\n\n#### 6.3 Covariates\n- Age\n- Sex/gender\n- BMI (for some measures)\n- Baseline physiological state\n- Other relevant covariates\n\n#### 6.4 Statistical Tests\n- Planned statistical tests for each hypothesis\n- Assumptions to be tested\n- Corrections for multiple comparisons\n- Alpha level\n- Effect size measures\n\n#### 6.5 Handling of Confounds\n- Respiration effects on HRV\n- Movement artifacts\n- Circadian rhythms\n- Habituation effects\n- Order effects\n\n### 7. Multimodal Integration (if applicable)\n\n- Synchronization method across modalities\n- Time-locking procedures\n- Integration analysis approach\n\n### 8. Software and Tools\n\n- Acquisition software and version\n- Analysis software and version (e.g., Kubios, Ledalab, AcqKnowledge, MATLAB toolboxes)\n- Custom scripts (will they be shared?)\n- Statistical software and version\n\n### 9. Data Sharing\n\n- Will data be shared? (Yes/No)\n- Repository (e.g., OSF, PhysioNet)\n- Level of sharing (raw, preprocessed, summary statistics)\n- Data format (e.g., BIDS-compatible)\n\n### 10. Deviations\n\n- How deviations from this preregistration will be documented\n- Distinction between confirmatory and exploratory analyses\n\n## Special Considerations for Remote/Wearable Psychophysiology\n\n### Device Specifications\n- Wearable device manufacturer and model\n- Sensor specifications\n- Validation studies for the device\n- Firmware version\n\n### Participant Setup\n- Self-application instructions\n- Video tutorials or written guides\n- Verification of correct placement\n- Troubleshooting procedures\n\n### Data Quality in Naturalistic Settings\n- Expected noise levels\n- Movement artifact handling\n- Environmental variability\n- Compliance monitoring\n\n### Signal Quality Thresholds\n- Minimum wear time\n- Maximum gap duration\n- Signal quality indicators\n- Re-recording procedures\n\n## References\n\nThis template draws from:\n- Society for Psychophysiological Research (SPR) guidelines\n- Handbook of Psychophysiology (Cacioppo, Tassinary, & Berntson)\n- Task Force of the European Society of Cardiology and the North American Society of Pacing and Electrophysiology (1996). Heart rate variability: Standards of measurement, physiological interpretation, and clinical use.\n- Boucsein et al. (2012). Publication recommendations for electrodermal measurements. Psychophysiology, 49(8), 1017-1034.\n- Fridlund & Cacioppo (1986). Guidelines for human electromyographic research. Psychophysiology, 23(5), 567-589.\n\n## Additional Resources\n\n- PhysioNet for physiological signal databases\n- BIOPAC application notes and guides\n- Kubios HRV software documentation\n- Ledalab for EDA analysis\n- SPR (Society for Psychophysiological Research) resources\n\n## Notes\n\n- Specify all parameters and thresholds before data collection\n- Document any deviations from standard procedures\n- Consider physiological confounds specific to your measures\n- Pilot test your paradigm to ensure adequate signal quality\n- Consult published guidelines for your specific measures\n- For clinical populations, consult with medical professionals about safety and contraindications\n",
+        "skillMarkdown": "# Psychophysiology Preregistration Skill\n\n## Description\n\nAnalyzes psychophysiology research projects and generates comprehensive preregistration documents. Detects physiological signal acquisition systems, processing parameters, and analysis plans from scripts and documentation.\n\n## Objective\n\nGenerate modality-appropriate psychophysiology preregistration by:\n1. Confirming psychophysiology modality\n2. Extracting acquisition parameters from scripts and data files\n3. Detecting signal processing pipeline (artifact detection, decomposition)\n4. Extracting statistical analysis plan\n5. Creating preregistration draft using psychophysiology template\n6. Guiding user through missing sections\n\n## Workflow\n\n### Step 1: Confirm Modality\nVerify psychophysiology detection:\n- Display files found: .acq, .edf, .mat, .txt files with physiological data\n- Identify signal types: ECG, EDA, EMG, respiration, pupillometry\n- Confirm with user: \"I detected psychophysiology files. Proceed?\"\n\n### Step 2: Detect Signal Types and Software\n\n**Software detection:**\n```\nAcqKnowledge detected: grep for \".acq\", \"biopac\", \"AcqKnowledge\"\nKubios detected: grep for \"kubios\", \"hrv\", \"rr_intervals\"\nLedalab detected: grep for \"ledalab\", \"eda\", \"scr\"\nMATLAB detected: grep for \".mat\", \"load\", \"ecg\", \"eda\"\nPython detected: grep for \"neurokit\", \"biosppy\", \"hrv\", \"eda\"\nR detected: grep for \"RHRV\", \"physio\", \"eda.R\"\n```\n\n**Signal type detection:**\n```\nECG/HRV: grep for \"ecg\", \"hrv\", \"rr\", \"ibi\", \"heart_rate\", \"r_peaks\"\nEDA/SCR: grep for \"eda\", \"gsr\", \"scr\", \"scl\", \"skin_conductance\"\nEMG: grep for \"emg\", \"electromyography\", \"muscle\"\nRespiration: grep for \"resp\", \"breathing\", \"respiration_rate\"\nPupillometry: grep for \"pupil\", \"eye_tracking\", \"pupil_diameter\"\n```\n\n### Step 3: Extract Acquisition Parameters\n\n**From AcqKnowledge files (.acq):**\n- Sampling rate from file header\n- Channel names and units\n- Recording duration\n- Hardware configuration\n\n**From Python scripts (NeuroKit2, BioSPPy):**\n```python\n# ECG/HRV extraction\necg_signals, info = nk.ecg_process(ecg, sampling_rate=1000)\nhrv_time = nk.hrv_time(peaks, sampling_rate=1000)\nhrv_freq = nk.hrv_frequency(peaks, sampling_rate=1000)\n\n# EDA extraction\neda_signals, info = nk.eda_process(eda, sampling_rate=100)\nscr_peaks = nk.eda_peaks(eda_cleaned)\n\n# Detect:\n- Sampling rate\n- Signal processing functions\n- Analysis parameters\n```\n\n**From MATLAB scripts:**\n```matlab\n% ECG/HRV\n[r_peaks, rr_intervals] = detect_r_peaks(ecg, fs);\nhrv_metrics = calculate_hrv(rr_intervals);\n\n% EDA\n[scr, scl] = decompose_eda(eda_signal, fs);\n\n% Detect:\n- Sampling frequency (fs)\n- Detection algorithms\n- Analysis windows\n```\n\n**From R scripts (RHRV, physio):**\n```r\n# HRV analysis\nhrv.data <- LoadBeatRR(file)\nhrv.data <- FilterNIHR(hrv.data)\nhrv.data <- CalculateTimeAnalysis(hrv.data)\n\n# Detect:\n- Data loading methods\n- Filtering parameters\n- Analysis functions\n```\n\n### Step 4: Extract Signal Processing Pipeline\n\n**ECG/HRV Processing:**\n- R-peak detection algorithm (Pan-Tompkins, Hamilton, etc.)\n- Artifact detection method\n- Ectopic beat handling\n- RR interval filtering\n- Interpolation method\n- Detrending\n\n**EDA Processing:**\n- Artifact detection and removal\n- Decomposition method (high-pass filter, CDA, cvxEDA)\n- Baseline correction\n- SCR detection criteria (amplitude threshold, rise time)\n- Tonic vs. phasic separation\n\n**EMG Processing:**\n- Filtering (high-pass, low-pass, notch)\n- Rectification method\n- Smoothing/envelope extraction\n- Baseline correction\n- Burst detection criteria\n\n**Respiration Processing:**\n- Peak detection\n- Rate calculation\n- Artifact handling\n- Baseline correction\n\n### Step 5: Extract Analysis Plan\n\n**From analysis scripts:**\n- Baseline period definition\n- Analysis windows (e.g., task vs. rest)\n- Dependent variables:\n  - HRV: SDNN, RMSSD, pNN50, LF, HF, LF/HF\n  - EDA: SCL, SCR amplitude, SCR frequency, AUC\n  - EMG: mean amplitude, peak amplitude, integrated EMG\n  - Respiration: rate, variability\n- Statistical tests (t-test, ANOVA, mixed models)\n- Covariates and confounds\n- Multiple comparisons correction\n\n**Keywords to search:**\n- `baseline`, `task`, `rest`, `condition`\n- `ttest`, `anova`, `lm`, `lmer`, `glm`\n- `SDNN`, `RMSSD`, `LF`, `HF`, `SCL`, `SCR`\n- `mean`, `median`, `peak`, `auc`\n\n### Step 6: Generate Draft\n\nCreate `PREREGISTRATION_DRAFT.md` with:\n- **Metadata** (from METADATA_SCHEMA.md)\n- **Study Information** (title, hypotheses, design)\n- **Participants** (N, criteria, exclusions)\n- **Psychophysiological Measures** (signal types, acquisition)\n- **Signal Processing** (detection algorithms, artifact handling)\n- **Analysis Plan** (dependent variables, statistical tests)\n- **Ethics** (from ETHICS_PRIVACY_TEMPLATE.md)\n\n### Step 7: Interactive Completion\n\nGuide user through sections:\n1. Verify detected signal types and software\n2. Confirm acquisition parameters (sampling rate, electrode placement)\n3. Detail signal processing decisions\n4. Specify analysis windows and dependent variables\n5. Define statistical analysis plan\n6. Complete missing sections\n\n## Detection Patterns\n\n### File Extensions\n- `.acq` - AcqKnowledge/BIOPAC data\n- `.edf` - European Data Format (common for physiological signals)\n- `.mat` - MATLAB data files\n- `.txt`, `.csv` - Text-based physiological data\n- `.hea`, `.dat` - PhysioNet WFDB format\n- `.ibi`, `.rr` - RR interval files\n\n### Software Keywords\n- AcqKnowledge: `acq`, `biopac`, `AcqKnowledge`\n- Kubios: `kubios`, `hrv_analysis`, `rr_correction`\n- Ledalab: `ledalab`, `analyze`, `optimize`\n- NeuroKit2: `nk.ecg_process`, `nk.eda_process`, `nk.hrv`\n- BioSPPy: `biosppy.signals`, `ecg.ecg`, `eda.eda`\n- RHRV: `LoadBeatRR`, `FilterNIHR`, `CalculateTimeAnalysis`\n\n### Signal Keywords\n- ECG/HRV: `ecg`, `hrv`, `r_peak`, `rr_interval`, `ibi`, `heart_rate`, `SDNN`, `RMSSD`, `LF`, `HF`\n- EDA: `eda`, `gsr`, `scr`, `scl`, `skin_conductance`, `tonic`, `phasic`\n- EMG: `emg`, `muscle`, `rectify`, `envelope`, `burst`\n- Respiration: `resp`, `breathing`, `respiration_rate`, `breath`\n- Pupillometry: `pupil`, `diameter`, `dilation`, `constriction`\n\n## Output Format\n\n```markdown\n# Preregistration: [Study Title]\n\n## Metadata\n[From METADATA_SCHEMA.md - all fields required]\n\n## Study Information\n- Research question: [extracted or TO BE COMPLETED]\n- Hypotheses: [extracted or TO BE COMPLETED]\n- Design: [extracted]\n\n## Participants\n- N: [extracted or TO BE COMPLETED]\n- Inclusion/exclusion: [TO BE COMPLETED]\n- Physiology-specific exclusions: [TO BE COMPLETED]\n  - Cardiovascular conditions (for ECG/HRV)\n  - Skin conditions (for EDA)\n  - Medications affecting autonomic function\n- Compensation: [TO BE COMPLETED]\n\n## Psychophysiological Measures\n\n### Signal Types\n- Signals recorded: [detected: ECG/EDA/EMG/Respiration/Pupil]\n\n### ECG/HRV Acquisition (if applicable)\n- System: [detected from files: AcqKnowledge/BIOPAC/etc.]\n- Lead configuration: [TO BE COMPLETED]\n- Electrode placement: [TO BE COMPLETED]\n- Sampling rate: [VERIFY: detected value]\n- Online filters: [TO BE COMPLETED]\n\n### EDA Acquisition (if applicable)\n- System: [detected from files]\n- Electrode placement: [TO BE COMPLETED]\n- Electrode type: [TO BE COMPLETED]\n- Sampling rate: [VERIFY: detected value]\n- Measurement mode: [TO BE COMPLETED]\n\n### EMG Acquisition (if applicable)\n- System: [detected from files]\n- Muscle sites: [TO BE COMPLETED]\n- Electrode placement: [TO BE COMPLETED]\n- Sampling rate: [VERIFY: detected value]\n\n### Other Signals\n- [Additional signals as detected]\n\n## Experimental Paradigm\n- Task: [TO BE COMPLETED]\n- Conditions: [TO BE COMPLETED]\n- Trial structure: [TO BE COMPLETED]\n- Baseline period: [extracted or TO BE COMPLETED]\n\n## Signal Processing\n\n### ECG/HRV Processing (if applicable)\n- R-peak detection: [detected algorithm or TO BE COMPLETED]\n- Artifact detection: [extracted method or TO BE COMPLETED]\n- Ectopic beat handling: [TO BE COMPLETED]\n- RR interval filtering: [extracted or TO BE COMPLETED]\n\n### EDA Processing (if applicable)\n- Artifact removal: [extracted method or TO BE COMPLETED]\n- Decomposition method: [detected or TO BE COMPLETED]\n- SCR detection criteria: [extracted or TO BE COMPLETED]\n- Baseline correction: [TO BE COMPLETED]\n\n### EMG Processing (if applicable)\n- Filtering: [extracted parameters or TO BE COMPLETED]\n- Rectification: [TO BE COMPLETED]\n- Smoothing: [extracted or TO BE COMPLETED]\n\n## Analysis Plan\n\n### Dependent Variables\n- HRV measures: [detected: SDNN/RMSSD/LF/HF or TO BE COMPLETED]\n- EDA measures: [detected: SCL/SCR or TO BE COMPLETED]\n- EMG measures: [TO BE COMPLETED]\n- Analysis windows: [extracted or TO BE COMPLETED]\n\n### Statistical Analysis\n- Primary analyses: [extracted or TO BE COMPLETED]\n- Statistical tests: [detected or TO BE COMPLETED]\n- Covariates: [TO BE COMPLETED]\n- Multiple comparisons: [TO BE COMPLETED]\n\n## Ethics & Data Management\n[From ETHICS_PRIVACY_TEMPLATE.md]\n```\n\n## Behavior Rules\n\n1. **Always scan script files** before asking about parameters\n2. **Detect signal types** from file extensions and keywords\n3. **Mark confidence levels** for each detection:\n   - ✓ High (direct in script, >2 mentions)\n   - ~ Medium (inferred from patterns)\n   - ? Low (guess, needs verification)\n4. **Never modify** project files\n5. **Ask focused questions** - one section at a time\n6. **Provide examples** for user input fields\n7. **Save as** `PREREGISTRATION_DRAFT.md` in project root\n\n## Example Interaction\n\n```\nUser: Create a preregistration\n\nAgent:\n1. Scans directory\n2. Finds: data.acq, process_hrv.py, analyze_eda.m\n3. ✓ Detects: Psychophysiology (confidence: high)\n4. Identifies signals:\n   - ECG/HRV (found \"hrv\", \"r_peaks\", \"RMSSD\")\n   - EDA (found \"eda\", \"scr\", \"ledalab\")\n5. Scans Python script:\n   - Finds: nk.ecg_process(ecg, sampling_rate=1000)\n   - Finds: nk.hrv_time(peaks) → SDNN, RMSSD\n   - Finds: nk.hrv_frequency(peaks) → LF, HF\n6. Scans MATLAB script:\n   - Finds: ledalab analyze\n   - Finds: SCR detection threshold: 0.05 µS\n7. Generates draft with:\n   - ✓ Signals: ECG, EDA\n   - ✓ Sampling rate: 1000 Hz (ECG)\n   - ✓ HRV measures: SDNN, RMSSD, LF, HF\n   - ~ EDA processing: Ledalab\n   - ? Electrode placement: [TO BE COMPLETED]\n8. Asks:\n   - \"Confirm ECG lead configuration?\"\n   - \"Specify EDA electrode placement?\"\n   - \"Define baseline and task periods?\"\n9. Saves: PREREGISTRATION_DRAFT.md\n```\n\n## Configuration\n\nLoad from `configs/psychophys-config.json`:\n```json\n{\n  \"modality\": \"psychophys\",\n  \"template\": \"templates/psychophys/PSYCHOPHYSIOLOGY_PREREGISTRATION_GUIDE.md\",\n  \"signal_types\": [\"ecg\", \"hrv\", \"eda\", \"emg\", \"respiration\", \"pupil\"],\n  \"search_patterns\": {\n    \"software\": [\"acqknowledge\", \"biopac\", \"kubios\", \"ledalab\", \"neurokit\", \"biosppy\", \"rhrv\"],\n    \"ecg_keywords\": [\"ecg\", \"hrv\", \"r_peak\", \"rr_interval\", \"SDNN\", \"RMSSD\", \"LF\", \"HF\"],\n    \"eda_keywords\": [\"eda\", \"gsr\", \"scr\", \"scl\", \"skin_conductance\"],\n    \"emg_keywords\": [\"emg\", \"muscle\", \"rectify\", \"envelope\"],\n    \"resp_keywords\": [\"resp\", \"breathing\", \"respiration_rate\"],\n    \"pupil_keywords\": [\"pupil\", \"diameter\", \"dilation\"]\n  },\n  \"required_sections\": [\n    \"Metadata\",\n    \"Study Information\",\n    \"Participants\",\n    \"Psychophysiological Measures\",\n    \"Experimental Paradigm\",\n    \"Signal Processing\",\n    \"Analysis Plan\",\n    \"Ethics\"\n  ]\n}\n```\n\n## Related Resources\n\n- Template: `templates/psychophys/PSYCHOPHYSIOLOGY_PREREGISTRATION_GUIDE.md`\n- Common metadata: `templates/biopsych/common/METADATA_SCHEMA.md`\n- Ethics template: `templates/biopsych/common/ETHICS_PRIVACY_TEMPLATE.md`\n- References: See README.md \"Psychophysiology Resources\" section\n\n## Key References\n\n1. Boucsein et al. (2012). Publication recommendations for electrodermal measurements. Psychophysiology, 49(8), 1017-1034.\n2. Task Force (1996). Heart rate variability: Standards of measurement. European Heart Journal, 17(3), 354-381.\n3. Fridlund & Cacioppo (1986). Guidelines for human electromyographic research. Psychophysiology, 23(5), 567-589.\n4. Cacioppo et al. (2007). Handbook of Psychophysiology (3rd ed.). Cambridge University Press.\n"
+      }
+    }
+  ]
+}

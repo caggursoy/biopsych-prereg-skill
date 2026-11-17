@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Builder &middot; Biopsych Prereg Builder</title>
+<meta name="description" content="Build a preregistration draft for EEG, fMRI, online behavioral or psychophysiology research and download it as Markdown.">
+<link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="index.html">Biopsych Prereg <span>Builder</span></a>
+    <nav class="site-nav" aria-label="Main">
+      <a href="index.html">Home</a>
+      <a href="builder.html" aria-current="page">Builder</a>
+      <a href="library.html">Library</a>
+      <a href="https://github.com/caggursoy/biopsych-prereg-skill">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main" class="wrap">
+  <div class="builder">
+    <div>
+      <div class="steps" role="group" aria-label="Builder steps">
+        <button class="step-btn" type="button" data-step="modality" aria-current="step">
+          <span class="num">1</span> Modality
+        </button>
+        <button class="step-btn" type="button" data-step="sections">
+          <span class="num">2</span> Sections
+        </button>
+        <button class="step-btn" type="button" data-step="review">
+          <span class="num">3</span> Review
+        </button>
+        <button class="step-btn" type="button" data-step="export">
+          <span class="num">4</span> Export
+        </button>
+      </div>
+
+      <section class="panel" id="panel-modality" aria-labelledby="h-modality">
+        <div class="panel-head">
+          <h2 id="h-modality">Choose a modality</h2>
+        </div>
+        <p class="small muted">
+          The section list, field ranges and validation rules come from this repository's
+          configuration files. You can change modality later without losing shared answers.
+        </p>
+        <div class="modality-grid" id="modalityGrid"></div>
+        <div class="notice mt-2" id="modalityNote" hidden></div>
+      </section>
+
+      <section class="panel" id="panel-sections" hidden aria-labelledby="h-sections">
+        <div class="panel-head">
+          <h2 id="h-sections">Fill the sections</h2>
+          <span class="tag" id="sectionSummary"></span>
+        </div>
+        <div class="notice notice-warn" id="validationSummary" hidden></div>
+        <div class="accordion" id="sectionAccordion"></div>
+      </section>
+
+      <section class="panel" id="panel-review" hidden aria-labelledby="h-review">
+        <div class="panel-head">
+          <h2 id="h-review">Review the draft</h2>
+          <span class="tag" id="reviewStats"></span>
+        </div>
+        <p class="small muted">
+          This is the exact Markdown that will be exported. Blank required fields appear as
+          <code>[TO BE COMPLETED]</code>; values you flagged appear as <code>[VERIFY: value]</code>.
+        </p>
+        <pre class="preview" id="previewOut" tabindex="0"></pre>
+      </section>
+
+      <section class="panel" id="panel-export" hidden aria-labelledby="h-export">
+        <div class="panel-head">
+          <h2 id="h-export">Export</h2>
+        </div>
+        <p class="small muted">
+          The file is generated in your browser. Nothing is uploaded anywhere.
+        </p>
+        <div class="row">
+          <button class="btn btn-primary" type="button" id="btnDownload">Download PREREGISTRATION_DRAFT.md</button>
+          <button class="btn" type="button" id="btnCopy">Copy Markdown</button>
+          <button class="btn" type="button" id="btnPrint">Print / Save as PDF</button>
+        </div>
+        <p class="small mt-1" id="exportStatus" role="status" aria-live="polite"></p>
+        <div class="notice mt-2">
+          <p>
+            <strong>Before you register:</strong> check every <code>[TO BE COMPLETED]</code> and
+            <code>[VERIFY: ...]</code> marker, confirm the ethics approval number, and make sure the
+            analysis plan names the tests you will actually run.
+          </p>
+        </div>
+      </section>
+    </div>
+
+    <aside class="sidebar" aria-label="Progress and settings">
+      <div class="panel">
+        <div class="panel-head">
+          <h3>Progress</h3>
+          <span class="tag" id="progressText">0%</span>
+        </div>
+        <div class="bar" style="width:100%;height:6px"><i id="progressBar"></i></div>
+        <p class="small muted mt-1" id="progressDetail">No modality selected.</p>
+        <div class="row mt-1">
+          <button class="btn btn-sm" type="button" id="btnReset">Reset answers</button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <h3>Groq assistance</h3>
+          <span class="tag" id="keyState">off</span>
+        </div>
+        <p class="small muted">
+          Optional. Expands one section at a time using the Groq free tier. The key stays in this
+          browser and is sent only to <code>api.groq.com</code>.
+        </p>
+        <div class="field">
+          <label for="keyInput">API key</label>
+          <input type="password" id="keyInput" autocomplete="off" spellcheck="false" placeholder="gsk_...">
+          <p class="help">Stored in local storage for this site only.</p>
+        </div>
+        <div class="field">
+          <label for="modelSelect">Model</label>
+          <select id="modelSelect">
+            <option value="openai/gpt-oss-120b">openai/gpt-oss-120b</option>
+            <option value="openai/gpt-oss-20b">openai/gpt-oss-20b</option>
+            <option value="qwen/qwen3.8-27b">qwen/qwen3.8-27b</option>
+          </select>
+        </div>
+        <div class="row">
+          <button class="btn btn-sm btn-primary" type="button" id="btnSaveKey">Save key</button>
+          <button class="btn btn-sm" type="button" id="btnForgetKey">Forget key</button>
+        </div>
+        <p class="small mt-1" id="keyStatus" role="status" aria-live="polite"></p>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <h3>Free-tier budget</h3>
+        </div>
+        <div class="meter" id="quotaMeter" aria-live="polite"></div>
+        <p class="small muted mt-1">
+          Limits are enforced before each request. Daily counters reset at 00:00 UTC.
+        </p>
+      </div>
+    </aside>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <span>Answers are saved in this browser only.</span>
+    <span><a href="library.html">Template library</a></span>
+  </div>
+</footer>
+
+<script src="assets/js/schema.js"></script>
+<script src="assets/js/throttle.js"></script>
+<script src="assets/js/groq.js"></script>
+<script src="assets/js/builder.js"></script>
+</body>
+</html>
