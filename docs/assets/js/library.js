@@ -29,9 +29,7 @@
       a.href = "?doc=" + encodeURIComponent(m.id) + "&view=" + currentView;
       a.textContent = m.label;
       if (m.id === currentId) {
-        a.style.background = "var(--accent-soft)";
-        a.style.color = "var(--accent)";
-        a.style.fontWeight = "500";
+        a.className = "is-active";
         a.setAttribute("aria-current", "true");
       }
       li.appendChild(a);
