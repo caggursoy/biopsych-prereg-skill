@@ -19,6 +19,26 @@ This project provides:
 
 👉 **[Full Quick Start Guide →](QUICKSTART.md)**
 
+## Web Builder (no install)
+
+Prefer not to install anything? The same templates run as a static site on GitHub Pages:
+
+**https://caggursoy.github.io/biopsych-prereg-skill/**
+
+- Pick a modality, fill the sections in the browser, download `PREREGISTRATION_DRAFT.md`
+- Blank required fields are exported as `[TO BE COMPLETED]`, flagged values as `[VERIFY: value]`
+- Optional AI assistance uses the Groq free tier with client-side rate limiting; no key is bundled and the builder works fully without one
+- Answers stay in your browser's local storage — nothing is uploaded
+
+The site is generated from `templates/` and `configs/`, so editing a template updates both the skill and the site. See [SITE_PLAN.md](SITE_PLAN.md) for the design and [scripts/build-site.mjs](scripts/build-site.mjs) for the generator.
+
+```bash
+node scripts/build-site.mjs      # regenerate docs/data and docs/assets/js
+node scripts/validate-site.mjs   # schema, link and asset checks
+node scripts/test-throttle.mjs   # rate limiter checks
+node scripts/test-groq.mjs       # Groq client checks
+```
+
 ## Documentation
 
 | Document | Purpose |
@@ -69,6 +89,8 @@ templates/          # Preregistration templates for each modality
 skills/            # AI skills for automated preregistration generation
 examples/          # Completed preregistration examples
 configs/           # Configuration files for detection and extraction
+docs/              # Static site published to GitHub Pages
+scripts/           # Site generator, validator and tests
 ```
 
 
